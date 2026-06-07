@@ -1,5 +1,5 @@
-// vectors are like arrays, vectors are different from array in a way that vectors have dynamic size, 
-// not fixed size
+// vectors are like arrays in memeory, vectors are different from array in a way that vectors have 
+// dynamic size, not fixed size
 
 
 
@@ -92,7 +92,8 @@
 
 
 
-// VECTOR STATIC AND DYNAMIC ALLOCATION
+
+// VECTOR's STATIC AND DYNAMIC ALLOCATION
 
 // (1) static allocation occurs during compile time and dynamic allocation occurs during run 
 // time
@@ -100,39 +101,39 @@
 
 
 // Finding the size and capacity of the vector after push_back
-#include<iostream>
-#include<vector>
-using namespace std;
-int main()
-{
-    vector<int>vec;
+// #include<iostream>
+// #include<vector>
+// using namespace std;
+// int main()
+// {
+//     vector<int>vec;
 
-    // size means the number of elements in the vector and capacity means how many elements the vector can store
-    vec.push_back(0);  // it doubles capacity to 1 and the size is increased 1 which was initially 0
-    vec.push_back(1);  // it doubles the capacity to 2 and the size increase to 2
-    vec.push_back(2);  // it doubles the capacity of vector to 4 and size increase to 3
+//     // size means the number of elements in the vector and capacity means how many elements the vector can store
+//     vec.push_back(0);  // it doubles capacity to 1 and the size is increased 1 which was initially 0
+//     vec.push_back(1);  // it doubles the capacity to 2 and the size increase to 2
+//     vec.push_back(2);  // it doubles the capacity of vector to 4 and size increase to 3
 
-    // (1) after every push_back if capacity is not enough to store the new element 
-    // new memory is reversed of double size the previous memory
-    // (new vector is made) and the previous elements of vector
-    // are stored there and then the new element is stored there and then the old memory is deleted
-    // (2) if capacity is high then element is stored there without allocating new memory
+//     // (1) after every push_back if capacity is not enough to store the new element 
+//     // new memory is reversed of double size the previous memory
+//     // (new vector is made) and the previous elements of vector
+//     // are stored there and then the new element is stored there and then the old memory is deleted
+//     // (2) if capacity is high then element is stored there without allocating new memory
 
-    cout<<"The size of the vector : "<<vec.size()<<endl;
-    cout<<"The capacity of the vector : "<<vec.capacity()<<endl;
+//     cout<<"The size of the vector : "<<vec.size()<<endl;
+//     cout<<"The capacity of the vector : "<<vec.capacity()<<endl;
 
-    cout<<endl;
-    vec.push_back(3);
-    cout<<"The size of the vector : "<<vec.size()<<endl;
-    cout<<"The capacity of the vector : "<<vec.capacity()<<endl;
+//     cout<<endl;
+//     vec.push_back(3);
+//     cout<<"The size of the vector : "<<vec.size()<<endl;
+//     cout<<"The capacity of the vector : "<<vec.capacity()<<endl;
 
-    cout<<endl;
-    vec.push_back(4);
-    cout<<"The size of the vector : "<<vec.size()<<endl;
-    cout<<"The capacity of the vector : "<<vec.capacity()<<endl;
+//     cout<<endl;
+//     vec.push_back(4);
+//     cout<<"The size of the vector : "<<vec.size()<<endl;
+//     cout<<"The capacity of the vector : "<<vec.capacity()<<endl;
 
-    return 0;
-}
+//     return 0;
+// }
 
 
 
