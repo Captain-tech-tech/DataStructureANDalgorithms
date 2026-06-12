@@ -154,6 +154,11 @@
 // }
 // Kadane's algorithm is like a kind of dynamic programming algorithm
 
+// logic of kadane's algorithm
+// "Agar current sum negative ho jaye, toh usse carry karne ka koi fayda nahi hai, kyunki 
+// woh aage ke sum ko aur chhota karega. Isliye current sum ko 0 se restart kar dete
+// hain. Har step par maximum sum ko update karte rehte hain. End mein jo sabse bada
+// sum mila, wahi maximum subarray sum hota hai."
 
 
 
