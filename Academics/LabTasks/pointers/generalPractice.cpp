@@ -46,6 +46,42 @@
 
 
 
+// (4)
+// #include<iostream>
+// using namespace std;
+// int main()
+// {
+//     const int a = 56;
+//     // a = 65;   // can't change const int value
+
+//     int b = 45;
+
+//     // here pointers are not const, it can store other address as well, here int is constant not pointer
+//     int const *ptr1 = &a;  // these both are same
+//     const int *ptr2 = &a;
+
+//     // *ptr1 = 78;  invalied
+//     // *ptr2 = 45;  invalied
+
+//     // when * is used in between * and pointer_name, then the pointer is constant and new address can't be assigned, here both int and pointer are constant
+//     int const *const ptr = &a;
+
+//     // ptr = &b;  invalid
+
+//     // here int is not constant and pointer is constant, so u can change int value through pointer but not the address inside pointer
+//     int *const p = &b;
+
+
+//     *p = 6785;
+//     cout<<*p<<endl;
+
+//     cout<<*ptr1<<endl;
+//     cout<<*ptr2<<endl;
+
+//     return 0;
+// }
+
+
 
 
 
