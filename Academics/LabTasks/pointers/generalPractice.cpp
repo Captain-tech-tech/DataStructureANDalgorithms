@@ -87,28 +87,34 @@
 
 
 // (5)
-#include<iostream>
-using namespace std;
-int main()
-{
-    int a = 97563;
+// #include<iostream>
+// using namespace std;
+// int main()
+// {
+//     int a = 97563;
     
-    void *ptr;
-    ptr = &a;
+//     void *ptr;
+//     ptr = &a;
 
-    cout<<ptr<<endl;
-    // cout<<*ptr<<endl;  // gives error, as pointer has no clue about how much space to read
-    cout<<(int *)ptr<<endl;
-    cout<<*(char *)ptr<<endl;  // it will access only one byte space, and print whatever value is present there
-    cout<<*(int *)ptr<<endl;
+//     cout<<ptr<<endl;
+//     // cout<<*ptr<<endl;  // gives error, as pointer has no clue about how much space to read
+//     cout<<(int *)ptr<<endl;
+//     cout<<*(char *)ptr<<endl;  // it will access only one byte space, and print whatever value is present there
+//     cout<<*(int *)ptr<<endl;
 
-    char b = 'Y';
-    ptr = &b;
+//     char b = 'Y';
+//     ptr = &b;
 
-    cout<<ptr<<endl;
-    cout<<*(char *)ptr<<endl;
-}
+//     cout<<ptr<<endl;
+//     cout<<*(char *)ptr<<endl;
+// }
 
 
 
+// (6)
+
+// int x = 5;
+// int y = 2;
+
+// double result = static_cast<double>(x) / y; // type casting in another way
 
