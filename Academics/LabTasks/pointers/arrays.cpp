@@ -1,3 +1,4 @@
+// (1)
 // #include<iostream>
 // using namespace std;
 // int main()
@@ -32,5 +33,44 @@
 
 
 
+
+// (2)
+
+// #include<iostream>
+// using namespace std;
+// int main()
+// {
+//     int *ptr[2];
+//     *(ptr + 0) = new int[4]{45,57,23,12};
+//     *(ptr + 1) = new int[4]{78,89,23,19};
+
+//     for(int i=0;i<2;i++)
+//     {
+//         for(int j=0;j<4;j++)
+//         cout<<*(*(ptr+i)+j)<<"  ";
+//         cout<<endl;
+//     }
+
+//     for(int i=0;i<2;i++)
+//     {
+//         delete[] *(ptr+i);
+//     }
+// }
+
+// int main()
+// {
+//     int **ptr = new int*[2];
+
+//     *(ptr + 0) = new int[3]{67,34,78};
+//     *(ptr + 1) = new int[3]{23,56,59};
+
+    
+//     for(int i=0;i<2;i++)
+//     {
+//         delete[] *(ptr+i);
+//     }
+
+//     delete ptr;
+// }
 
 
