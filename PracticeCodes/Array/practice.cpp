@@ -79,8 +79,8 @@
 
 
 // bitwise ^   XOR  or exclusive_or operator  apply ^ on different numbers 
-// bitwise >> ,   a << b is equal to answer = a*2^b in memory  like if a = 8 and b = 1
-// bitwise << ,   a >> b is equal to answer = a/2^b in memory 
+// bitwise >> ,   a >> b is equal to answer = a*2^b in memory  like if a = 8 and b = 1
+// bitwise << ,   a << b is equal to answer = a/2^b in memory 
 
 // local and global variables
 
