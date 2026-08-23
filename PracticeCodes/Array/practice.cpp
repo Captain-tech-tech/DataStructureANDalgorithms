@@ -78,7 +78,7 @@
 
 
 
-// bitwise ^   XOR  or exclusive_or operator  appl ^ on different numbers 
+// bitwise ^   XOR  or exclusive_or operator  apply ^ on different numbers 
 // bitwise >> ,   a << b is equal to answer = a*2^b in memory  like if a = 8 and b = 1
 // bitwise << ,   a >> b is equal to answer = a/2^b in memory 
 
@@ -93,6 +93,53 @@
 
 
 
-// practice question : how to find if a number is power of 2 without any loop
-// write a function to reverse an integer 
+
+
+
+// #include<iostream>
+// using namespace std;
+
+// // function to check whether a number is power of 2 or not without any loop 
+// void check_power(int num)
+// {
+//     if((num ^ 1)  > num)
+//     {
+//         cout<<"This number is in power of 2"<<endl;
+//     }
+//     else
+//     cout<<"This number is not in power of 2"<<endl;
+// }
+
+// // function to check whether a number is power of 2 or not
+// void check_power(int num)
+// {
+//     int flag = 0;
+//     int p = 1;
+//     while(num != 2)
+//     {
+//         p++;
+//         if((num%2) != 0)
+//         {
+//             flag = 1;
+//             break;
+//         }
+//         num /= 2;
+//     }
+
+//     if(flag == 0)
+//     cout<<"This number is power of 2, and the power is "<<p<<endl;
+//     else if(flag ==1)
+//     cout<<"This number is not power of 2"<<endl;
+// }
+
+// int main()
+// {
+//     int num;cout<<"Enter a number : ";cin>>num;
+
+//     check_power(num);
+// }
+
+
+
+
 
