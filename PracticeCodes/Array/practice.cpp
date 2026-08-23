@@ -93,6 +93,19 @@
 
 
 
+// Array : An array is a collection of similar items stored in contiguous memory locations
+// static array   vs   dynamic array 
+// Static Array : it allocates memory at compile time and its size is fixed
+// Dynamic Array : it automatically grows when we try to make insertion and there is no space left for new item
+// accessing an element of array takes O(1), as : 
+// address of ith index = base address + offset           e.g: arr[4]
+// offset = i * (size of an element)
+
+
+
+
+
+
 
 
 
