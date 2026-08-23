@@ -143,3 +143,23 @@
 
 
 
+// write a program to reverse an integer 
+// #include<iostream>
+// using namespace std;
+// int main()
+// {
+//     long int num;cout<<"Enter a number : ";cin>>num;
+
+//     long int temp = num;
+    
+//     long int reverse = 0;
+//     while(temp != 0)
+//     {
+//         int reminder = temp % 10;
+//         reverse = reminder + reverse*10;
+//         temp /= 10;
+//     }
+
+//     cout<<"The reverse of "<<num<<" is "<<reverse<<endl;
+// }
+
