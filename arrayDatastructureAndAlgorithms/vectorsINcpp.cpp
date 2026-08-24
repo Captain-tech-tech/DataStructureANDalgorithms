@@ -37,11 +37,11 @@
 // int main()
 // {
 //     vector<int>vec(4,0);
-//     vector<float>num(5,3);  // here the size is 5 and a every index 3 is stored
+//     vector<float>num(5,3);  // here the size is 5 and at every index 3 is stored
 //     cout<<vec[3]<<endl<<num[4]<<endl;
 
 //     // for each loop is used in vectors
-//     for(int i:vec)   // here i does store the index number but store the value at the index
+//     for(int i:vec)   // here i does not store the index number but store the value at the index
 //     {
 //         cout<<i<<" ";
 //     }
@@ -138,35 +138,19 @@
 
 
 
+// #include<iostream>
+// #include<vector>
+// using namespace std;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// int main()
+// {
+//     vector<int>v3(5,8);
+//     for(int i:v3)
+//     cout<<i<<"  ";
+//     cout<<endl;
+//     cout<<v3.size()<<endl; // it tells the number of elements
+//     cout<<v3.capacity()<<endl; // it tells the capacity the numbers vector can store 
+//     cout<<sizeof(v3)<<endl; // it tells the exact memory size of the variable in bytes
+// }
 
 
