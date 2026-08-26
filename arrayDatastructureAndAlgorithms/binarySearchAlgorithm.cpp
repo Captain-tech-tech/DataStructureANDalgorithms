@@ -1,4 +1,5 @@
 // binary search works on sorted array
+// linear search O(n) and binary search takes O(logn)
 
 
 #include<iostream>
