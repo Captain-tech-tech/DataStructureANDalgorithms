@@ -179,3 +179,47 @@
 // delete from here 
 
 
+
+
+// -----------------------------------------------------------------------------
+// Sorting algorithms
+// Bubble Sort Algorithm
+#include<iostream>
+using namespace std;
+
+void bubbleSort(int arr[], int s)
+{
+    for(int i=0;i<s-1;i++)
+    {
+        bool isSwap = false;  // for optimization, if no swap occurs, it means array is already sorted, so break the loop
+        for(int j=0;j<s-i-1;j++)
+        {
+            if(arr[j]>arr[j+1])
+            {
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+                isSwap = true;
+            }
+        }
+        if(!isSwap)
+            return;
+    }
+}
+
+void print(int arr[], int s)
+{
+    for(int i=0;i<s;i++)
+    cout<<arr[i]<<"   ";
+    cout<<endl;
+}
+int main()
+{
+    int arr[] = {56,23,78,23,67,126,12};
+    print(arr, 7);
+
+    bubbleSort(arr, 7);
+
+    print(arr, 7);
+}
+
