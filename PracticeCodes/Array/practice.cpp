@@ -183,11 +183,13 @@
 
 // -----------------------------------------------------------------------------
 // Sorting algorithms
-// Bubble Sort Algorithm
+
 #include<iostream>
 using namespace std;
 
-void bubbleSort(int arr[], int s)
+
+// Bubble Sort Algorithm
+void bubbleSort(int arr[], int s)  // O(n^2)
 {
     for(int i=0;i<s-1;i++)
     {
@@ -207,6 +209,43 @@ void bubbleSort(int arr[], int s)
     }
 }
 
+
+// Selection Sort
+void selectionSort(int arr[], int s)  // O(n^2)
+{
+    for(int i=0;i<s;i++)
+    {
+        int smallest = i;
+        for(int j=i+1;j<s;j++)
+        {
+            if(arr[smallest] > arr[j])
+            smallest = j;
+        }
+
+        swap(arr[i],arr[smallest]);
+    }
+}
+
+
+// Insertion Sort
+void insertionSort(int arr[], int s)  // O(n^2)
+{
+    for(int i=1;i<s;i++)
+    {
+        int current = arr[i];
+        int previous = i-1;
+
+        while(previous >= 0 && arr[previous] > current)
+        {
+            arr[previous + 1] = arr[previous];
+            previous--;
+        }
+        arr[previous+1] = current;
+    }
+}
+
+
+
 void print(int arr[], int s)
 {
     for(int i=0;i<s;i++)
@@ -222,4 +261,10 @@ int main()
 
     print(arr, 7);
 }
+
+
+
+
+
+
 
