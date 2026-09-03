@@ -19,8 +19,6 @@
 
 
 
-
-
 #include<iostream>
 #include<stack>
 using namespace std;
@@ -32,11 +30,18 @@ int main()
     s.push(43);
     s.emplace(34);
 
+
     cout<<s.top()<<endl;  // top is use to know which element is present at the top of stack
 
     s.pop();  // it removes the element present at the top
 
     cout<<s.empty()<<endl; // it is used to check whether the stack is empty or not
+
+    stack<int>s1;
+    s1.swap(s);   // swipping the elements of s and s1 stack, so now s has 0 size and s1 has 3 size
+
+    cout<<"s size : "<<s.size()<<endl;
+    cout<<"s1 size : "<<s1.size()<<endl;
 
     // printing all elements one by one and then deleting the element one by one 
     while(!s.empty())
@@ -46,6 +51,7 @@ int main()
     }
     cout<<endl;
 
+    
     return 0;
 }
 
