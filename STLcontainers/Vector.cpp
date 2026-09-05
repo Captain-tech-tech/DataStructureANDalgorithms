@@ -1,3 +1,19 @@
+// An iterator is an object that acts like a pointer. It points to an element inside a container 
+// (like a std::vector, std::list, or std::map) and allows you to cycle through the elements one by one 
+// without needing to know how the container is structured under the hood.
+
+
+// All containers provide .begin() and .end() 
+
+
+// A functor (or function object) is simply a class or struct that can be called like a function. 
+// This is achieved by overloading the function call operator ().
+// Unlike regular functions, functors can contain member variables. This means they can remember data and 
+// retain state between calls.Because functors are objects, the C++ compiler can easily inline their code, 
+// making them faster than traditional function pointers.
+
+
+
 // Characteristics of Vectors
 
 // Dynamic Size: Unlike standard arrays with fixed lengths, vectors adjust their storage automatically when 
