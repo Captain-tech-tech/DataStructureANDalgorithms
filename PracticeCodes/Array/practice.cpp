@@ -112,15 +112,15 @@
 // #include<iostream>
 // using namespace std;
 
-// // function to check whether a number is power of 2 or not without any loop 
-// void check_power(int num)
-// {
-//     if((num ^ 1)  > num)
-//     {
-//         cout<<"This number is in power of 2"<<endl;
+// // function to check whether a number is power of 2 or not, without any loop 
+// void check_power(int num) {
+//     // A power of 2 is greater than 0 and has only one bit set to 1.
+//     // num & (num - 1) clears the lowest set bit. If the result is 0, it is a power of 2.
+//     if (num > 0 && (num & (num - 1)) == 0) {
+//         cout << "This number is a power of 2" << endl;
+//     } else {
+//         cout << "This number is not a power of 2" << endl;
 //     }
-//     else
-//     cout<<"This number is not in power of 2"<<endl;
 // }
 
 // // function to check whether a number is power of 2 or not
@@ -184,83 +184,82 @@
 // -----------------------------------------------------------------------------
 // Sorting algorithms
 
-#include<iostream>
-using namespace std;
+// #include<iostream>
+// using namespace std;
 
 
-// Bubble Sort Algorithm
-void bubbleSort(int arr[], int s)  // O(n^2)
-{
-    for(int i=0;i<s-1;i++)
-    {
-        bool isSwap = false;  // for optimization, if no swap occurs, it means array is already sorted, so break the loop
-        for(int j=0;j<s-i-1;j++)
-        {
-            if(arr[j]>arr[j+1])
-            {
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-                isSwap = true;
-            }
-        }
-        if(!isSwap)
-            return;
-    }
-}
+// // Bubble Sort Algorithm
+// void bubbleSort(int arr[], int s)  // O(n^2)
+// {
+//     for(int i=0;i<s-1;i++)
+//     {
+//         bool isSwap = false;  // for optimization, if no swap occurs, it means array is already sorted, so break the loop
+//         for(int j=0;j<s-i-1;j++)
+//         {
+//             if(arr[j]>arr[j+1])
+//             {
+//                 int temp = arr[j];
+//                 arr[j] = arr[j+1];
+//                 arr[j+1] = temp;
+//                 isSwap = true;
+//             }
+//         }
+//         if(!isSwap)
+//             return;
+//     }
+// }
 
 
-// Selection Sort
-void selectionSort(int arr[], int s)  // O(n^2)
-{
-    for(int i=0;i<s;i++)
-    {
-        int smallest = i;
-        for(int j=i+1;j<s;j++)
-        {
-            if(arr[smallest] > arr[j])
-            smallest = j;
-        }
+// // Selection Sort
+// void selectionSort(int arr[], int s)  // O(n^2)
+// {
+//     for(int i=0;i<s;i++)
+//     {
+//         int smallest = i;
+//         for(int j=i+1;j<s;j++)
+//         {
+//             if(arr[smallest] > arr[j])
+//             smallest = j;
+//         }
 
-        swap(arr[i],arr[smallest]);
-    }
-}
-
-
-// Insertion Sort
-void insertionSort(int arr[], int s)  // O(n^2)
-{
-    for(int i=1;i<s;i++)
-    {
-        int current = arr[i];
-        int previous = i-1;
-
-        while(previous >= 0 && arr[previous] > current)
-        {
-            arr[previous + 1] = arr[previous];
-            previous--;
-        }
-        arr[previous+1] = current;
-    }
-}
+//         swap(arr[i],arr[smallest]);
+//     }
+// }
 
 
+// // Insertion Sort
+// void insertionSort(int arr[], int s)  // O(n^2)
+// {
+//     for(int i=1;i<s;i++)
+//     {
+//         int current = arr[i];
+//         int previous = i-1;
 
-void print(int arr[], int s)
-{
-    for(int i=0;i<s;i++)
-    cout<<arr[i]<<"   ";
-    cout<<endl;
-}
-int main()
-{
-    int arr[] = {56,23,78,23,67,126,12};
-    print(arr, 7);
+//         while(previous >= 0 && arr[previous] > current)
+//         {
+//             arr[previous + 1] = arr[previous];
+//             previous--;
+//         }
+//         arr[previous+1] = current;
+//     }
+// }
 
-    bubbleSort(arr, 7);
 
-    print(arr, 7);
-}
+// void print(int arr[], int s)
+// {
+//     for(int i=0;i<s;i++)
+//     cout<<arr[i]<<"   ";
+//     cout<<endl;
+// }
+// int main()
+// {
+//     int arr[] = {56,23,78,23,67,126,12};
+//     print(arr, 7);
+
+//     bubbleSort(arr, 7);
+
+//     print(arr, 7);
+// }
 
 
 
