@@ -30,7 +30,7 @@
 
 
 
-
+// find the duplicate number
 // #include<iostream>
 // #include<vector>
 // using namespace std;
