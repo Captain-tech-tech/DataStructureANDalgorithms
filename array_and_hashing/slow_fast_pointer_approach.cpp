@@ -31,30 +31,46 @@
 
 
 
-#include<iostream>
-#include<vector>
-using namespace std;
-int main()
-{
-    vector<int> v = {1,3,4,2,2};
-    int slow = v[0], fast = v[0];
+// #include<iostream>
+// #include<vector>
+// using namespace std;
+// int main()
+// {
+//     vector<int> v = {1,3,4,2,2};
+//     int slow = v[0], fast = v[0];
 
-    do{
-        slow = v[slow], fast = v[v[fast]];
-    }
-    while(slow != fast);
+//     do{
+//         slow = v[slow], fast = v[v[fast]];
+//     }
+//     while(slow != fast);
 
-    slow = v[0];
+//     slow = v[0];
 
-    while(slow != fast)
-    {
-        slow = v[slow];
-        fast = v[fast];
-    }
-    cout<<slow<<endl;
-    return 0;
-}
+//     while(slow != fast)
+//     {
+//         slow = v[slow];
+//         fast = v[fast];
+//     }
+//     cout<<slow<<endl;
+//     return 0;
+// }
 
 
 
+
+
+// using unordered set to solve the same problem 
+// class Solution {
+// public:
+//     int findDuplicate(vector<int>& nums) {
+//         unordered_set<int>s;
+//         for(int val:nums)
+//         {
+//             if(s.find(val) != s.end())
+//                 return val;
+//             s.insert(val);
+//         }
+//         return -1;
+//     }
+// };
 
