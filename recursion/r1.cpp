@@ -170,6 +170,28 @@ bool isSorted(int arr[], int size)
 }
 
 
+// printing subsets
+void printSubsets(vector<int> & arr, vector<int> & ans, int i)   // O(2^n * n)
+{
+    if(i == arr.size())
+    {
+        for(int val:ans)
+            cout<<val<<"  ";
+        cout<<endl;
+        return;
+    }
+
+    // include
+    ans.push_back(arr[i]);
+    printSubsets(arr, ans, i+1);
+
+    ans.pop_back();  // back_tracking
+
+    // exclude
+    printSubsets(arr, ans, i+1);
+
+}
+
 int main()
 {
     // printNums(10);
@@ -190,8 +212,12 @@ int main()
 
     // cout<<fibonacci(5)<<endl;
 
-    int arr[] = {1,2,4,5,8,9,12,76,89};
-    cout<<isSorted(arr,8)<<endl;
+    // int arr[] = {1,2,4,5,8,9,12,76,89};
+    // cout<<isSorted(arr,8)<<endl;
+
+    vector<int> v = {1,2,3};
+    vector<int> ans;
+    printSubsets(v, ans, 0);
     return 0; 
 }
 
