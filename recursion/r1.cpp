@@ -158,6 +158,17 @@ int fibonacci(int n)
 // the stack follows depth-first execution, each recursive call gets its own separate stack frame
 // n-1 and n-2 are used because every Fibonacci number is the sum of the two previous Fibonacci numbers
 
+bool isSorted(int arr[], int size)
+{
+    if(size <= 0)
+        return true;
+    
+    if(arr[size] < arr[size-1])
+        return false;
+    
+    return isSorted(arr, size-1);
+}
+
 
 int main()
 {
@@ -177,8 +188,10 @@ int main()
     //     cout<<i<<"  ";
     // cout<<endl;
 
-    cout<<fibonacci(5)<<endl;
+    // cout<<fibonacci(5)<<endl;
 
+    int arr[] = {1,2,4,5,8,9,12,76,89};
+    cout<<isSorted(arr,8)<<endl;
     return 0; 
 }
 
