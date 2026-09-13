@@ -5,6 +5,8 @@
 // if base case is not added, the recursion never stops, eventually the program crashes because the call 
 // stack becomes full which is called Stack Overflow
 
+// Recursion is the programming technique. Recurrence is the mathematical way of describing the cost of that recursion.
+
 // Every backtracking algorithm usually uses recursion, but not every recursive algorithm is backtracking.
 // factorial finding through recursion is not normally backtracking algorithm
 // Backtracking means:
@@ -56,12 +58,6 @@
 // Then sum(2) continues.
 // And so on.
 // This is LIFO
-
-
-
-
-
-
 
 
 
@@ -145,9 +141,11 @@ void reverse_vector(vector<int>&v, int s, int e)
 int main()
 {
     // printNums(10);
+
     // cout<<fact(5)<<endl;
+
     // cout<<sum(10)<<endl;
-    
+
     // int arr[] = {345,67,34,57,23,57,34,567};
     // reverseArray(arr,7);
     // cout<<endl;
@@ -157,6 +155,7 @@ int main()
     // for(auto i:v)
     //     cout<<i<<"  ";
     // cout<<endl;
+
     return 0; 
 }
 
