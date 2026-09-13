@@ -138,6 +138,27 @@ void reverse_vector(vector<int>&v, int s, int e)
     reverse_vector(v, s+1, e-1);
 }
 
+int fibonacci(int n)
+{
+    if(n == 0 || n == 1)
+        return n;
+    return fibonacci(n-1) + fibonacci(n-2);
+}
+
+//                     fibonacci(4)
+//                    /            \
+//                   /              \
+//           fibonacci(3)        fibonacci(2)
+//            /       \            /       \
+//           /         \          /         \
+//    fibonacci(2)  fibonacci(1) fibonacci(1) fibonacci(0)
+//       /     \
+//      /       \
+// fib(1)      fib(0)
+// the stack follows depth-first execution, each recursive call gets its own separate stack frame
+// n-1 and n-2 are used because every Fibonacci number is the sum of the two previous Fibonacci numbers
+
+
 int main()
 {
     // printNums(10);
@@ -155,6 +176,8 @@ int main()
     // for(auto i:v)
     //     cout<<i<<"  ";
     // cout<<endl;
+
+    cout<<fibonacci(5)<<endl;
 
     return 0; 
 }
