@@ -206,6 +206,44 @@ void printSubsets(vector<int> & arr, vector<int> & ans, int i)   // O(2^n * n)
 //    [1,2,3]     [1,2] [1,3] [1]  [2,3] [2] [3]   []
 
 
+
+
+class Solution {
+public:
+    void getPermutation(vector<int> &nums, int idx, vector<vector<int>>& ans) // TC : O(n! * n), SC: O(n!)
+    {
+        if(idx == nums.size())
+        {
+            ans.push_back({nums});
+            return;
+        }
+        for(int i=idx; i<nums.size(); i++)
+        {
+            swap(nums[idx], nums[i]);
+
+            getPermutation(nums, idx+1, ans);
+
+            swap(nums[idx], nums[i]);
+        }
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        getPermutation(nums, 0, ans);
+        return ans;
+    }
+};
+//          [1,2,3]
+//        idx = 0
+//      /    |     \
+//     /     |      \
+//    1      2       3
+//   / \    / \     / \
+//  2   3  1   3   1   2
+//  |   |  |   |   |   |
+// 123 132 213 231 312 321
+
+
+
 int main()
 {
     // printNums(10);
