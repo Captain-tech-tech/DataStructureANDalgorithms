@@ -241,6 +241,17 @@ public:
 //  2   3  1   3   1   2
 //  |   |  |   |   |   |
 // 123 132 213 231 312 321
+// Start at position 0.
+
+// For every number:
+//     Put that number at position 0.
+    
+//     Now recursively generate
+//     all permutations of the remaining positions.
+    
+//     Undo the change.
+
+// Move to the next possible number.
 
 
 
