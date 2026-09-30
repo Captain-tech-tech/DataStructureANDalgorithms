@@ -1,3 +1,6 @@
+// A stack is a linear data structure in which insertion and deletion happen from one end only, called the TOP.
+// The rule is: LIFO = Last In, First Out
+
 // (2) LinkedList based implementation of stack
 
 
