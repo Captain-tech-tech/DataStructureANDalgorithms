@@ -26,6 +26,7 @@ public:
     
     Stack(int val)
     {
+        size = 0;
         capacity = 10;
         arr = new int[capacity];
         *(arr+size) = val;
