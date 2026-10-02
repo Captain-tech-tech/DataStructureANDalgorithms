@@ -86,7 +86,7 @@
 
 // using namespace std;
 
-// vector<int> prevSmallerElement(vector<int>arr)
+// vector<int> prevSmallerElement(vector<int>arr)  // TC: O(n). SC: O(n)
 // {
 //     vector<int>ans(arr.size(),0);
 //     stack<int>s;
@@ -125,6 +125,70 @@
 // }
 
 
+
+
+
+// The celebrity problem
+// Given a 2D array (n x n), such that arr[i][j] = 1 means ith person knows jth person, the task is to find the celebrity.
+// • A celebrity is a person who is known to all but does not know anyone.
+// • Return the index of the celebrity. If there is no celebrity, return -1.
+// Example Matrix
+// arr = [, [0,0,0], [0,1,0] ]
+
+#include<iostream>
+#include<vector>
+#include<stack>
+using namespace std;
+
+int getcelebrity(vector<vector<int>>nums)
+{
+    int n = nums.size();
+    stack<int>s;
+    for(int i=0;i<n;i++)
+    {
+        s.push(i);
+    }
+
+    while(s.size()>1)
+    {
+        int i = s.top();
+        s.pop();
+
+        int j = s.top();
+        s.pop();
+
+        if(nums[i][j]==0)
+            s.push(i);
+        else
+            s.push(j);
+    }
+
+    int celebrity = s.top();
+
+    for(int i=0;i<n;i++)
+    {
+        if((i!=celebrity) && (nums[i][celebrity]==0 || nums[celebrity][i]==1))
+        {
+            return -1;
+        }
+    }
+
+    return celebrity;
+}
+
+int main()
+{
+    vector<vector<int>>arr = {
+        {0,1,0},
+        {0,0,0},
+        {0,1,0}
+    };
+
+    int ans = getcelebrity(arr);
+    cout<<"The celebrity : "<<ans<<endl;
+
+    return 0;
+}
 
 
 
