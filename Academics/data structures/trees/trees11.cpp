@@ -204,10 +204,23 @@ public:
         }
     }
 
+// for counting number of nodes
+    int Count(Node *p)
+    {
+        int x, y;
+
+        if (p != nullptr)
+        {
+            x = Count(p->lchild);
+            y = Count(p->rchild);
+            return x + y + 1;
+        }
+        return 0;
+    }
 
     // PREORDER
     // Root -> Left -> Right
-    void Preorder(Node *p)
+    void Preorder(Node *p)   // there are n nodes and n+1 nullptr in the binary tree  so total number of calls = n+n+1 = 2n+1
     {
         if (p == nullptr)
         {
@@ -391,6 +404,7 @@ int main()
          << t.Height(t.root)
          << endl;
 
+    cout << "Number of nodes = "<< t.Count(t.root)<< endl;
 
     return 0;
 }
