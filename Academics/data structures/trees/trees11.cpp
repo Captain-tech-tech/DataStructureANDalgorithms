@@ -217,7 +217,86 @@ public:
         }
         return 0;
     }
+    // int count(Node *p)     // for counting number of nodes
+    // {
+    //     if(root)
+    //         return count(root->lchild)+count(root->rchild)+1;
+    //     return 0;
+    // }
 
+
+    // (1)
+    // for counting number of leaf nodes
+    int countLeafNodes(Node *p)
+    {
+        int x,y;
+        if(p!=nullptr)
+        {
+            x = countLeafNodes(p->lchild);
+            y = countLeafNodes(p->rchild);
+            if(p->lchild==nullptr && p->rchild==nullptr)   // this condition because leaf nodes are with the degree 0
+                return x+y+1;
+            else
+                return x+y;
+        }
+        return 0;
+    }
+
+    // (2)
+    // for counting number of non-leaf nodes with degree 2 only
+    int countNonLeafNodes(Node *p)
+    {
+        int x,y;
+        if(p!=nullptr)
+        {
+            x = countLeafNodes(p->lchild);
+            y = countLeafNodes(p->rchild);
+            if(p->lchild!=nullptr && p->rchild!=nullptr)   // this condition because non-leaf nodes are with the degree 2 here
+                return x+y+1;
+            else
+                return x+y;
+        }
+        return 0;
+    }
+
+    // (3)
+    // for counting number of non-leaf nodes with degree 1 or 2 both
+    int countNonleafnodes(Node *p)
+    {
+        int x,y;
+        if(p!=nullptr)
+        {
+            x = countLeafNodes(p->lchild);
+            y = countLeafNodes(p->rchild);
+            if(p->lchild!=nullptr || p->rchild!=nullptr)   // this condition because non-leaf nodes are with the degree 1 or 2 here
+                return x+y+1;
+            else
+                return x+y;
+        }
+        return 0;
+    }    
+
+
+    // (4)
+    // for counting number of non-leaf nodes with degree 1 only
+    int countNonleafNodes(Node *p)
+    {
+        int x,y;
+        if(p!=nullptr)
+        {
+            x = countLeafNodes(p->lchild);
+            y = countLeafNodes(p->rchild);
+            // if((p->lchild!=nullptr && p->rchild==nullptr) || (p->lchild==nullptr && p->rchild!=nullptr)) // this condition because non-leaf nodes are with the degree 1 or 2 here
+            // or
+            if(p->lchild!=nullptr ^ p->rchild!=nullptr)
+                return x+y+1;
+            else
+                return x+y;
+        }
+        return 0;
+    }    
+
+    
     // PREORDER
     // Root -> Left -> Right
     void Preorder(Node *p)   // there are n nodes and n+1 nullptr in the binary tree  so total number of calls = n+n+1 = 2n+1
