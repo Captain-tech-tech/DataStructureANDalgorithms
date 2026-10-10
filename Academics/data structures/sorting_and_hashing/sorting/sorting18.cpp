@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<vector>
+#include<climits>
 using namespace std;
 
 
@@ -68,7 +69,35 @@ void selectionSort(vector<int>&arr)
     }
 }
 
+int partition(vector<int>& A, int l, int h)
+{
+    int pivot = A[l];
+    int i = l, j = h;
 
+    do
+    {
+        do { i++; } while (A[i] <= pivot);
+        do { j--; } while (A[j] > pivot);
+
+        if (i < j)
+            swap(A[i], A[j]);
+
+    } while (i < j);
+
+    swap(A[l], A[j]);
+    return j;
+}
+
+// recursive function to actually sort the array
+void quickSort(vector<int>& A, int l, int h)
+{
+    if (l < h)
+    {
+        int j = partition(A, l, h);
+        quickSort(A, l, j);     // sorts the left side
+        quickSort(A, j + 1, h); // sorts the right side
+    }
+}
 
 
 int main()
@@ -77,9 +106,11 @@ int main()
 
     // bubbleSort(arr);
     // insertionSort(arr);
-    selectionSort(arr);
-    for(int i=0;i<arr.size();i++)
-        cout<<arr[i]<<"  ";
+    // selectionSort(arr);
+    vector<int>arr1 = {8,5,7,3,2,INT_MAX};
+    quickSort(arr1,0,arr1.size()-1);
+    for(int i=0;i<arr1.size()-1;i++)
+        cout<<arr1[i]<<"  ";
     
     return 0;
 }
