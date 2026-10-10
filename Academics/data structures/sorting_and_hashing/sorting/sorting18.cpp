@@ -237,6 +237,41 @@ void countSort(vector<int>& A)
 
 
 
+// radix sort algorithm 
+void RadixSort(vector<int>& A)
+{
+    if (A.empty()) return;
+
+    auto maxVal = max_element(A.begin(),A.end());
+    int max = *maxVal;
+    int n = A.size();
+
+    // 2D Vector representing 10 Bins (indices 0 to 9)
+    vector<vector<int>> bins(10);
+
+    // loop through each place value: 1s, 10s, 100s...,  exp represents the denominator
+    for (int exp=1; max/exp>0; exp*=10)
+    {
+        // distribute elements into the bins based on the current digit
+        for (int i = 0; i < n; i++)
+        {
+            int binIndex = (A[i] / exp) % 10;
+            bins[binIndex].push_back(A[i]);
+        }
+
+        // collect elements back from the bins into original vector A
+        int idx = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            for (int num : bins[i])
+            {
+                A[idx++] = num;
+            }
+            bins[i].clear(); // Clear the bin for the next pass
+        }
+    }
+}
+
 
 int main()
 {
@@ -255,7 +290,10 @@ int main()
     // RMergeSort(arr,0,arr.size()-1);
     
 
-    countSort(arr);
+    // countSort(arr);
+
+    // RadixSort(arr);
+    
     for (int num : arr)
         cout << num << " ";    
     
