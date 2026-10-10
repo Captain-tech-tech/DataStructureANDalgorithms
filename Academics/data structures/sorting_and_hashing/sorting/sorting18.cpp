@@ -306,6 +306,34 @@ void binSort(vector<int>& A)
 }
 
 
+// shell sort algorithm
+void shellSort(vector<int>& A)
+{
+    int n = A.size();
+    int gap, i, j, temp;
+
+    // loop runs until gap reduces to 1 (gap > 0)
+    for (gap = n / 2; gap > 0; gap /= 2)
+    {
+        for (i = gap; i < n; i++)
+        {
+            temp = A[i];
+            
+            // checking backward from index 'i'
+            j = i - gap; 
+            
+            // boundary checks down to index 0 (j >= 0)
+            while (j >= 0 && A[j] > temp)
+            {
+                A[j + gap] = A[j];
+                j = j - gap;
+            }
+            A[j + gap] = temp;
+        }
+    }
+}
+
+
 int main()
 {
     // vector<int>arr = {8,5,7,3,2};
@@ -327,7 +355,9 @@ int main()
 
     // RadixSort(arr);
 
-    binSort(arr);
+    // binSort(arr);
+
+    shellSort(arr);
 
     for (int num : arr)
         cout << num << " ";    
