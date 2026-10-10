@@ -3,6 +3,7 @@
 #include<iostream>
 #include<vector>
 #include<climits>
+#include<algorithm>
 using namespace std;
 
 
@@ -198,6 +199,42 @@ void RMergeSort(vector<int>& A, int l, int h)
 
 
 
+// count sort algorithm
+void countSort(vector<int>& A)
+{
+    if (A.empty()) return;
+
+    auto maxVal = max_element(A.begin(), A.end());   // max_element function is present in <algorithm>
+    int max = *maxVal;
+    int i, j;
+
+    // create the count array 'C' initialized with 0s, which size is max + 1 to accommodate indices from 0 up to max
+    vector<int> C(max + 1, 0);
+
+    // Count the frequency of each element in A
+    for (i = 0; i < A.size(); i++)
+    {
+        C[A[i]]++;
+    }
+
+    // Copy sorted elements back from C into original vector A
+    i = 0; // Index pointer for count vector C
+    j = 0; // Index pointer for original vector A
+    
+    while (i < max + 1)
+    {
+        if (C[i] > 0)
+        {
+            A[j++] = i;
+            C[i]--;
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
+
 
 
 
@@ -215,11 +252,12 @@ int main()
     //     cout<<arr[i]<<"  ";
 
     vector<int> arr = {8, 3, 7, 4, 9, 2, 6, 5};
-    RMergeSort(arr,0,arr.size()-1);
-    for (int num : arr)
-        cout << num << " ";
+    // RMergeSort(arr,0,arr.size()-1);
+    
 
-        
+    countSort(arr);
+    for (int num : arr)
+        cout << num << " ";    
     
     return 0;
 }
