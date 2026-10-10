@@ -100,17 +100,111 @@ void quickSort(vector<int>& A, int l, int h)
 }
 
 
+// O(m+n)   
+// merge here applies on two arrays and returns a sorted new array
+vector<int> merge(const vector<int>& A, const vector<int>& B)
+{
+    int m = A.size();
+    int n = B.size();
+    
+    // allocate space for the merged vector C
+    vector<int> C(m + n); 
+    int i = 0, j = 0, k = 0;
+    // compare elements from both vectors and copy the smaller one
+    while (i < m && j < n)
+    {
+        if (A[i] < B[j])
+            C[k++] = A[i++];
+        else
+            C[k++] = B[j++];
+    }
+
+    for (;i<m;i++)
+        C[k++] = A[i];
+    for (;j<n;j++)
+        C[k++] = B[j];
+    return C;
+}
+
+// if there are two lists inside one array and we want to sort the array  like  [2,5,8,12,3,6,7,10]
+void merging(vector<int>& A, int l, int mid, int h)
+{
+    int i = l;
+    int j = mid + 1;
+    int k = l;
+    
+    // create temporary vector B of size h + 1 to accommodate indices up to h
+    vector<int> B(h + 1);
+
+    // compare and merge elements into B
+    while (i <= mid && j <= h)
+    {
+        if (A[i] < A[j])
+            B[k++] = A[i++];
+        else
+            B[k++] = A[j++];
+    }
+
+    // copy remaining elements from the left sorted half
+    for (; i <= mid; i++)
+        B[k++] = A[i];
+
+    // copy remaining elements from the right sorted half
+    for (; j <= h; j++)
+        B[k++] = A[j];
+
+    // copy the merged elements back into the original vector A
+    for (i = l; i <= h; i++)
+        A[i] = B[i];
+}
+
+// Iterative mergeSort function
+void IMergeSort(vector<int>& A)
+{
+    int n = A.size();
+    int p, i, l, mid, h;
+
+    // outer loop sizes passes by powers of 2 (2, 4, 8...)
+    for (p = 2; p <= n; p = p * 2)
+    {
+        // inner loop merges pairs of sub-arrays of size p
+        for (i = 0; i + p - 1 < n; i = i + p)
+        {
+            l = i;
+            h = i + p - 1;
+            mid = (l + h) / 2;
+            
+            merging(A, l, mid, h);
+        }
+    }
+
+    // if the array size is not a perfect power of 2, merge the remaining elements left over at the end
+    if (p / 2 < n)
+    {
+        merging(A, 0, (p / 2) - 1, n - 1);
+    }
+}
+
+
 int main()
 {
-    vector<int>arr = {8,5,7,3,2};
+    // vector<int>arr = {8,5,7,3,2};
 
     // bubbleSort(arr);
     // insertionSort(arr);
     // selectionSort(arr);
-    vector<int>arr1 = {8,5,7,3,2,INT_MAX};
-    quickSort(arr1,0,arr1.size()-1);
-    for(int i=0;i<arr1.size()-1;i++)
-        cout<<arr1[i]<<"  ";
+    // vector<int>arr1 = {8,5,7,3,2,INT_MAX};
+    // quickSort(arr1,0,arr1.size()-1);
+
+    // for(int i=0;i<arr.size()-1;i++)
+    //     cout<<arr[i]<<"  ";
+
+    // vector<int> arr = {8, 3, 7, 4, 9, 2, 6, 5};
+    // IMergeSort(arr);
+    // for (int num : arr)
+        // cout << num << " ";
+
+        
     
     return 0;
 }
