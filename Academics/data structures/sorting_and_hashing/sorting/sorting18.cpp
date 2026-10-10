@@ -172,18 +172,33 @@ void IMergeSort(vector<int>& A)
         {
             l = i;
             h = i + p - 1;
-            mid = (l + h) / 2;
-            
+            mid = (l + h) / 2;    
             merging(A, l, mid, h);
         }
     }
-
     // if the array size is not a perfect power of 2, merge the remaining elements left over at the end
-    if (p / 2 < n)
+    if (p / 2 < n)   // like if an array contains 5,7 or 9 elements
     {
         merging(A, 0, (p / 2) - 1, n - 1);
     }
 }
+
+// recursive way of merge sort
+void RMergeSort(vector<int>& A, int l, int h)
+{
+    if (l < h)
+    {
+        int mid = (l + h) / 2;
+        RMergeSort(A, l, mid);      // recursively sort the left half
+        RMergeSort(A, mid + 1, h);  // recursively sort the right half
+        
+        merging(A, l, mid, h);       // merge the two sorted halves together
+    }
+}
+
+
+
+
 
 
 int main()
@@ -199,10 +214,10 @@ int main()
     // for(int i=0;i<arr.size()-1;i++)
     //     cout<<arr[i]<<"  ";
 
-    // vector<int> arr = {8, 3, 7, 4, 9, 2, 6, 5};
-    // IMergeSort(arr);
-    // for (int num : arr)
-        // cout << num << " ";
+    vector<int> arr = {8, 3, 7, 4, 9, 2, 6, 5};
+    RMergeSort(arr,0,arr.size()-1);
+    for (int num : arr)
+        cout << num << " ";
 
         
     
