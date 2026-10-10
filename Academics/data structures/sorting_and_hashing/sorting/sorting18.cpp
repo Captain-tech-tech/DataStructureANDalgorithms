@@ -273,6 +273,39 @@ void RadixSort(vector<int>& A)
 }
 
 
+// bin/bucket sort algorithm
+void binSort(vector<int>& A)
+{
+    if (A.empty()) return;
+
+    auto maxVal = max_element(A.begin(), A.end());
+    int max = *maxVal;
+
+    // create a 2D vector of bins initialized up to index 'max'
+    vector<vector<int>> Bins(max + 1);
+
+    // insert elements into their respective bins
+    for (int i = 0; i < A.size(); i++)
+    {
+        Bins[A[i]].push_back(A[i]);
+    }
+
+    // collect elements back into the original vector A
+    int i = 0; // Index pointer for bins
+    int j = 0; // Index pointer for array A
+
+    while (i < max + 1)
+    {
+        // if a bin contains elements, dump them sequentially into A
+        for (int element : Bins[i])
+        {
+            A[j++] = element;
+        }
+        i++;
+    }
+}
+
+
 int main()
 {
     // vector<int>arr = {8,5,7,3,2};
@@ -293,7 +326,9 @@ int main()
     // countSort(arr);
 
     // RadixSort(arr);
-    
+
+    binSort(arr);
+
     for (int num : arr)
         cout << num << " ";    
     
