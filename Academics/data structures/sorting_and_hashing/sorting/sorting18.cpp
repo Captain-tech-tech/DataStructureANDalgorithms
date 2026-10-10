@@ -374,3 +374,90 @@ int main()
 
 
 
+
+// tree sort algorithm
+// #include <iostream>
+// #include <vector>
+// using namespace std;
+
+// // Definition of a Binary Search Tree Node
+// struct Node {
+//     int data;
+//     Node* left;
+//     Node* right;
+    
+//     Node(int val) {
+//         data = val;
+//         left = nullptr;
+//         right = nullptr;
+//     }
+// };
+
+// // Helper function to insert a value into the BST
+// Node* insert(Node* root, int key) {
+//     // If the tree is empty, create and return a new node
+//     if (root == nullptr) {
+//         return new Node(key);
+//     }
+    
+//     // Otherwise, recur down the tree
+//     if (key < root->data) {
+//         root->left = insert(root->left, key);
+//     } else {
+//         // Equal elements are placed in the right subtree to preserve stability
+//         root->right = insert(root->right, key);
+//     }
+    
+//     return root;
+// }
+
+// // Helper function to perform Inorder Traversal and overwrite the vector
+// void inorderTraversal(Node* root, vector<int>& A, int& index) {
+//     if (root != nullptr) {
+//         inorderTraversal(root->left, A, index);  // Visit left subtree
+//         A[index++] = root->data;                 // Copy node data to vector
+//         inorderTraversal(root->right, A, index); // Visit right subtree
+//     }
+// }
+
+// // Function to delete the tree from memory to prevent leaks
+// void freeTree(Node* root) {
+//     if (root != nullptr) {
+//         freeTree(root->left);
+//         freeTree(root->right);
+//         delete root;
+//     }
+// }
+
+// // Tree Sort Algorithm 
+// void TreeSort(vector<int>& A) {
+//     if (A.empty()) return;
+
+//     Node* root = nullptr;
+
+//     // Phase 1: Build the Binary Search Tree
+//     for (int i = 0; i < A.size(); i++) {
+//         root = insert(root, A[i]);
+//     }
+
+//     // Phase 2: Perform Inorder Traversal to extract sorted elements
+//     int index = 0;
+//     inorderTraversal(root, A, index);
+
+//     // Clean up memory
+//     freeTree(root);
+// }
+
+// int main() {
+//     vector<int> arr = {8, 3, 10, 1, 6, 14, 4, 7, 13};
+
+//     TreeSort(arr);
+
+//     for (int num : arr) {
+//         cout << num << " ";
+//     }
+//     cout << endl;
+
+//     return 0;
+// }
+
