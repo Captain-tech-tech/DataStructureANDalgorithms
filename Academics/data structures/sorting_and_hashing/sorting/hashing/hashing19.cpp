@@ -127,7 +127,7 @@
 
 
 
-
+// linear probing
 // #include <iostream>
 // #include <vector>
 // using namespace std;
@@ -313,3 +313,216 @@
 
 //     return 0;
 // }
+
+
+
+
+
+
+
+
+
+
+
+// quadratic probing
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class QuadraticHashTable
+{
+private:
+    enum State
+    {
+        EMPTY,
+        OCCUPIED,
+        DELETED
+    };
+
+    vector<int> table;
+    vector<State> state;
+    int SIZE;
+
+    // Hash function: handles negative keys too
+    int hashFunction(int key) const
+    {
+        int index = key % SIZE;
+        return (index + SIZE) % SIZE;
+    }
+
+    // Quadratic probing: (h(key) + i^2) % SIZE
+    int quadraticProbe(int index, int i) const
+    {
+        long long offset = 1LL * i * i;
+        return (index + offset % SIZE) % SIZE;
+    }
+
+public:
+    explicit QuadraticHashTable(int size)
+        : SIZE(size > 0 ? size : 11),
+          table(SIZE),
+          state(SIZE, EMPTY)
+    {
+    }
+
+    // Insert a key
+    bool Insert(int key)
+    {
+        int index = hashFunction(key);
+        int firstDeleted = -1;
+
+        for (int i = 0; i < SIZE; i++)
+        {
+            int pos = quadraticProbe(index, i);
+
+            if (state[pos] == OCCUPIED)
+            {
+                if (table[pos] == key)
+                {
+                    cout << key << " already exists.\n";
+                    return false;
+                }
+            }
+            else if (state[pos] == DELETED)
+            {
+                if (firstDeleted == -1)
+                    firstDeleted = pos;
+            }
+            else // EMPTY
+            {
+                int target =
+                    (firstDeleted != -1) ? firstDeleted : pos;
+
+                table[target] = key;
+                state[target] = OCCUPIED;
+
+                cout << key << " inserted at index "
+                     << target << ".\n";
+                return true;
+            }
+        }
+
+        // If no EMPTY slot was found, reuse a deleted slot
+        if (firstDeleted != -1)
+        {
+            table[firstDeleted] = key;
+            state[firstDeleted] = OCCUPIED;
+
+            cout << key << " inserted at index "
+                 << firstDeleted << ".\n";
+            return true;
+        }
+
+        cout << "No available slot in the probe sequence "
+             << "for key " << key << ".\n";
+        return false;
+    }
+
+    // Search for a key; return its index or -1
+    int Search(int key) const
+    {
+        int index = hashFunction(key);
+
+        for (int i = 0; i < SIZE; i++)
+        {
+            int pos = quadraticProbe(index, i);
+
+            // An EMPTY slot means the key was not inserted
+            // farther along this probe sequence.
+            if (state[pos] == EMPTY)
+                return -1;
+
+            if (state[pos] == OCCUPIED &&
+                table[pos] == key)
+            {
+                return pos;
+            }
+        }
+
+        return -1;
+    }
+
+    // Delete a key without breaking the probe sequence
+    bool Remove(int key)
+    {
+        int pos = Search(key);
+
+        if (pos == -1)
+        {
+            cout << key << " not found; cannot remove.\n";
+            return false;
+        }
+
+        state[pos] = DELETED;
+
+        cout << key << " removed from index "
+             << pos << ".\n";
+        return true;
+    }
+
+    // Display the table
+    void Display() const
+    {
+        cout << "\nQuadratic Hash Table:\n";
+
+        for (int i = 0; i < SIZE; i++)
+        {
+            cout << "[" << i << "] -> ";
+
+            if (state[i] == EMPTY)
+                cout << "EMPTY";
+            else if (state[i] == DELETED)
+                cout << "DELETED";
+            else
+                cout << table[i];
+
+            cout << '\n';
+        }
+    }
+};
+
+int main()
+{
+    // 11 is prime; prime sizes are recommended
+    QuadraticHashTable HT(11);
+
+    cout << "--- Insertion ---\n";
+    HT.Insert(12);
+    HT.Insert(22);
+    HT.Insert(32);
+    HT.Insert(42);
+
+    HT.Display();
+
+    cout << "\n--- Searching ---\n";
+
+    int key = 32;
+    int pos = HT.Search(key);
+
+    if (pos != -1)
+        cout << key << " found at index " << pos << ".\n";
+    else
+        cout << key << " not found.\n";
+
+    key = 99;
+    pos = HT.Search(key);
+
+    if (pos != -1)
+        cout << key << " found at index " << pos << ".\n";
+    else
+        cout << key << " not found.\n";
+
+    cout << "\n--- Deletion ---\n";
+    HT.Remove(22);
+    HT.Display();
+
+    cout << "\n--- Insert after deletion ---\n";
+    HT.Insert(52);
+    HT.Display();
+
+    return 0;
+}
+
+
+
+
