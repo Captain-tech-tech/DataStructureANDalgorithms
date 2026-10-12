@@ -128,95 +128,95 @@
 
 
 // linear probing
-#include <iostream>
+// #include <iostream>
 
-// Define the maximum size of the hash table
-const int SIZE = 10;
+// // Define the maximum size of the hash table
+// const int SIZE = 10;
 
-/**
- * Purpose: Hash Function
- * Computes the initial index for a given key using the modulus operator.
- * This is a simple division hash method.
- */
-int hashFunction(int key) {
-    return key % SIZE;
-}
+// /**
+//  * Purpose: Hash Function
+//  * Computes the initial index for a given key using the modulus operator.
+//  * This is a simple division hash method.
+//  */
+// int hashFunction(int key) {
+//     return key % SIZE;
+// }
 
-/**
- * Purpose: Linear Probing (Collision Resolution)
- * If a collision occurs (the index is already filled), this function scans 
- * the hash table sequentially (index + 1, index + 2, ...) to find the next available empty spot (0).
- */
-int probe(int H[], int key) {
-    int index = hashFunction(key);
-    int i = 0;
+// /**
+//  * Purpose: Linear Probing (Collision Resolution)
+//  * If a collision occurs (the index is already filled), this function scans 
+//  * the hash table sequentially (index + 1, index + 2, ...) to find the next available empty spot (0).
+//  */
+// int probe(int H[], int key) {
+//     int index = hashFunction(key);
+//     int i = 0;
     
-    // Linearly scan the table until an empty space (value 0) is found
-    while (H[(index + i) % SIZE] != 0) {
-        i++;
-    }
+//     // Linearly scan the table until an empty space (value 0) is found
+//     while (H[(index + i) % SIZE] != 0) {
+//         i++;
+//     }
     
-    return (index + i) % SIZE;
-}
+//     return (index + i) % SIZE;
+// }
 
-/**
- * Purpose: Insert Key
- * Inserts a unique key into the hash table. If the direct index is occupied,
- * it invokes the probe function to find the correct open address.
- */
-void Insert(int H[], int key) {
-    int index = hashFunction(key);
+// /**
+//  * Purpose: Insert Key
+//  * Inserts a unique key into the hash table. If the direct index is occupied,
+//  * it invokes the probe function to find the correct open address.
+//  */
+// void Insert(int H[], int key) {
+//     int index = hashFunction(key);
     
-    // Check if a collision occurred (slot is not empty)
-    if (H[index] != 0) {
-        index = probe(H, key);
-    }
+//     // Check if a collision occurred (slot is not empty)
+//     if (H[index] != 0) {
+//         index = probe(H, key);
+//     }
     
-    // Place the key into the open index
-    H[index] = key;
-}
+//     // Place the key into the open index
+//     H[index] = key;
+// }
 
-/**
- * Purpose: Search Key
- * Searches for a key in the hash table by computing its initial index 
- * and using linear probing to trace it if it was shifted due to a collision.
- */
-int Search(int H[], int key) {
-    int index = hashFunction(key);
-    int i = 0;
+// /**
+//  * Purpose: Search Key
+//  * Searches for a key in the hash table by computing its initial index 
+//  * and using linear probing to trace it if it was shifted due to a collision.
+//  */
+// int Search(int H[], int key) {
+//     int index = hashFunction(key);
+//     int i = 0;
     
-    // Linearly scan until the key is found 
-    // Note: In production code, you should also handle bounds to prevent an infinite loop if the key doesn't exist
-    while (H[(index + i) % SIZE] != key) {
-        i++;
-    }
+//     // Linearly scan until the key is found 
+//     // Note: In production code, you should also handle bounds to prevent an infinite loop if the key doesn't exist
+//     while (H[(index + i) % SIZE] != key) {
+//         i++;
+//     }
     
-    return (index + i) % SIZE;
-}
+//     return (index + i) % SIZE;
+// }
 
-int main() {
-    // Initialize Hash Table (HT) with all zeros representing empty spaces
-    int HT[SIZE] = {0};
+// int main() {
+//     // Initialize Hash Table (HT) with all zeros representing empty spaces
+//     int HT[SIZE] = {0};
 
-    // Inserting values from the images
-    Insert(HT, 12); // Hashes to index 2
-    Insert(HT, 25); // Hashes to index 5
-    Insert(HT, 35); // Hashes to index 5 -> Collides, probes to index 6
-    Insert(HT, 26); // Hashes to index 6 -> Collides, probes to index 7
+//     // Inserting values from the images
+//     Insert(HT, 12); // Hashes to index 2
+//     Insert(HT, 25); // Hashes to index 5
+//     Insert(HT, 35); // Hashes to index 5 -> Collides, probes to index 6
+//     Insert(HT, 26); // Hashes to index 6 -> Collides, probes to index 7
 
-    // Displaying the contents of the Hash Table
-    std::cout << "Hash Table contents:" << std::endl;
-    for (int i = 0; i < SIZE; i++) {
-        std::cout << "Index " << i << " -> " << HT[i] << std::endl;
-    }
+//     // Displaying the contents of the Hash Table
+//     std::cout << "Hash Table contents:" << std::endl;
+//     for (int i = 0; i < SIZE; i++) {
+//         std::cout << "Index " << i << " -> " << HT[i] << std::endl;
+//     }
 
-    // Testing the Search function
-    int searchKey = 35;
-    std::cout << "\nSearching for key " << searchKey << "..." << std::endl;
-    std::cout << "Found at index: " << Search(HT, searchKey) << std::endl;
+//     // Testing the Search function
+//     int searchKey = 35;
+//     std::cout << "\nSearching for key " << searchKey << "..." << std::endl;
+//     std::cout << "Found at index: " << Search(HT, searchKey) << std::endl;
 
-    return 0;
-}
+//     return 0;
+// }
 
 
 
@@ -229,3 +229,93 @@ int main() {
 
 
 // quadratic probing
+// #include <iostream>
+
+// // Define the maximum size of the hash table
+// const int SIZE = 10;
+
+// /**
+//  * Purpose: Hash Function
+//  * Computes the initial index for a given key using the modulus operator.
+//  */
+// int hashFunction(int key) {
+//     return key % SIZE;
+// }
+
+// /**
+//  * Purpose: Quadratic Probing (Collision Resolution)
+//  * Scans the hash table using a quadratic offset (i * i) to find the next 
+//  * available empty slot (0). Slots checked: index, index+1, index+4, index+9...
+//  */
+// int probe(int H[], int key) {
+//     int index = hashFunction(key);
+//     int i = 0;
+    
+//     // Quadratically scan the table until an empty space (value 0) is found
+//     while (H[(index + i * i) % SIZE] != 0) {
+//         i++;
+//     }
+    
+//     return (index + i * i) % SIZE;
+// }
+
+// /**
+//  * Purpose: Insert Key
+//  * Inserts a unique key into the hash table. If the direct index is occupied,
+//  * it invokes the quadratic probe function to find the open address.
+//  */
+// void Insert(int H[], int key) {
+//     int index = hashFunction(key);
+    
+//     // Check if a collision occurred (slot is not empty)
+//     if (H[index] != 0) {
+//         index = probe(H, key);
+//     }
+    
+//     // Place the key into the calculated open index
+//     H[index] = key;
+// }
+
+// /**
+//  * Purpose: Search Key
+//  * Searches for a key in the hash table by computing its initial index 
+//  * and using quadratic probing (index + i * i) to track its location.
+//  */
+// int Search(int H[], int key) {
+//     int index = hashFunction(key);
+//     int i = 0;
+    
+//     // Quadratically scan until the key is found
+//     while (H[(index + i * i) % SIZE] != key) {
+//         i++;
+//     }
+    
+//     return (index + i * i) % SIZE;
+// }
+
+// int main() {
+//     // Initialize Hash Table (HT) with all zeros representing empty spaces
+//     int HT[SIZE] = {0};
+
+//     // Inserting values to observe quadratic probing behavior
+//     Insert(HT, 12); // Hashes to index 2
+//     Insert(HT, 25); // Hashes to index 5
+//     Insert(HT, 35); // Hashes to index 5 -> Collides. Checks (5 + 1^2)%10 = 6. Index 6 is free.
+//     Insert(HT, 26); // Hashes to index 6 -> Collides. Checks (6 + 1^2)%10 = 7. Index 7 is free.
+
+//     // Displaying the contents of the Hash Table
+//     std::cout << "Quadratic Probing Hash Table contents:" << std::endl;
+//     for (int i = 0; i < SIZE; i++) {
+//         std::cout << "Index " << i << " -> " << HT[i] << std::endl;
+//     }
+
+//     // Testing the Search function
+//     int searchKey = 35;
+//     std::cout << "\nSearching for key " << searchKey << "..." << std::endl;
+//     std::cout << "Found at index: " << Search(HT, searchKey) << std::endl;
+
+//     return 0;
+// }
+
+
+
