@@ -319,3 +319,120 @@
 
 
 
+
+
+
+
+
+// double hashing
+#include <iostream>
+
+// M is the size of the hash table
+const int M = 11; 
+
+// R is a prime number smaller than M (used for the second hash function)
+const int R = 7;  
+
+/**
+ * Purpose: First Hash Function (h1)
+ * Computes the base/initial index for a given key.
+ */
+int h1(int key) {
+    return key % M;
+}
+
+/**
+ * Purpose: Second Hash Function (h2)
+ * Computes the step size for probing when a collision happens.
+ * It must never return 0, otherwise the probe would get stuck in an infinite loop.
+ */
+int h2(int key) {
+    // Formula 1: h2(k) = 1 + (k % R)
+    return 1 + (key % R);
+
+    // Formula 2: h2(k) = R - (key % R)
+    // To use Formula 2, uncomment the line below and comment out the line above:
+    // return R - (key % R);
+}
+
+/**
+ * Purpose: Double Hashing Probing 
+ * Calculates the next available index step-by-step using the step size from h2(key).
+ */
+int probe(int H[], int key) {
+    int index = h1(key);
+    int stepSize = h2(key);
+    int i = 0;
+    
+    // Move forward by multiplying 'i' with the step size until an empty spot (0) is found
+    while (H[(index + i * stepSize) % M] != 0) {
+        i++;
+    }
+    
+    return (index + i * stepSize) % M;
+}
+
+/**
+ * Purpose: Insert Key
+ * Inserts a key into its primary index. If occupied, it resolves the 
+ * collision by calculating a dynamic offset via double hashing.
+ */
+void Insert(int H[], int key) {
+    int index = h1(key);
+    
+    // Check if a collision occurred (slot is not empty)
+    if (H[index] != 0) {
+        index = probe(H, key);
+    }
+    
+    // Place the key into the open index
+    H[index] = key;
+}
+
+/**
+ * Purpose: Search Key
+ * Finds the index of a key by calculating its base hash and tracking its location
+ * step-by-step using the same step size multiplier from h2.
+ */
+int Search(int H[], int key) {
+    int index = h1(key);
+    int stepSize = h2(key);
+    int i = 0;
+    
+    // Step forward dynamically until the key is matched
+    while (H[(index + i * stepSize) % M] != key) {
+        i++;
+    }
+    
+    return (index + i * stepSize) % M;
+}
+
+int main() {
+    // Initialize Hash Table (H) with all zeros representing empty spaces
+    int HT[M] = {0};
+
+    // Inserting values to demonstrate double hashing
+    Insert(HT, 5);   // h1(5) = 5%11 = 5
+    Insert(HT, 16);  // h1(16) = 16%11 = 5 -> Collision! 
+                     // h2(16) = 1 + (16%7) = 1 + 2 = 3 step size.
+                     // Next check: (5 + 1*3) % 11 = 8. Index 8 is free.
+                     
+    Insert(HT, 27);  // h1(27) = 27%11 = 5 -> Collision!
+                     // h2(27) = 1 + (27%7) = 1 + 6 = 7 step size.
+                     // Next check: (5 + 1*7) % 11 = 12 % 11 = 1. Index 1 is free.
+
+    // Displaying the contents of the Hash Table
+    std::cout << "Double Hashing Table contents (M=11, R=7):" << std::endl;
+    for (int i = 0; i < M; i++) {
+        std::cout << "Index " << i << " -> " << HT[i] << std::endl;
+    }
+
+    // Testing the Search function
+    int searchKey = 16;
+    std::cout << "\nSearching for key " << searchKey << "..." << std::endl;
+    std::cout << "Found at index: " << Search(HT, searchKey) << std::endl;
+
+    return 0;
+}
+
+
