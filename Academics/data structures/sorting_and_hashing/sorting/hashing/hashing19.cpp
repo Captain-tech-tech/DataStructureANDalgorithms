@@ -128,191 +128,95 @@
 
 
 // linear probing
-// #include <iostream>
-// #include <vector>
-// using namespace std;
+#include <iostream>
 
-// class HashTable
-// {
-// private:
-//     enum State { EMPTY, OCCUPIED, DELETED };
+// Define the maximum size of the hash table
+const int SIZE = 10;
 
-//     vector<int> H;
-//     vector<State> state;
-//     int SIZE;
+/**
+ * Purpose: Hash Function
+ * Computes the initial index for a given key using the modulus operator.
+ * This is a simple division hash method.
+ */
+int hashFunction(int key) {
+    return key % SIZE;
+}
 
-//     // Hash function
-//     int hashFunction(int key) const
-//     {
-//         int index = key % SIZE;
-//         return (index + SIZE) % SIZE;
-//     }
+/**
+ * Purpose: Linear Probing (Collision Resolution)
+ * If a collision occurs (the index is already filled), this function scans 
+ * the hash table sequentially (index + 1, index + 2, ...) to find the next available empty spot (0).
+ */
+int probe(int H[], int key) {
+    int index = hashFunction(key);
+    int i = 0;
+    
+    // Linearly scan the table until an empty space (value 0) is found
+    while (H[(index + i) % SIZE] != 0) {
+        i++;
+    }
+    
+    return (index + i) % SIZE;
+}
 
-//     // Linear probing function
-//     int probe(int index, int i) const
-//     {
-//         return (index + i) % SIZE;
-//     }
+/**
+ * Purpose: Insert Key
+ * Inserts a unique key into the hash table. If the direct index is occupied,
+ * it invokes the probe function to find the correct open address.
+ */
+void Insert(int H[], int key) {
+    int index = hashFunction(key);
+    
+    // Check if a collision occurred (slot is not empty)
+    if (H[index] != 0) {
+        index = probe(H, key);
+    }
+    
+    // Place the key into the open index
+    H[index] = key;
+}
 
-// public:
-//     // Constructor
-//     explicit HashTable(int size)
-//         : SIZE(size > 0 ? size : 10),
-//           H(SIZE),
-//           state(SIZE, EMPTY)
-//     {
-//     }
+/**
+ * Purpose: Search Key
+ * Searches for a key in the hash table by computing its initial index 
+ * and using linear probing to trace it if it was shifted due to a collision.
+ */
+int Search(int H[], int key) {
+    int index = hashFunction(key);
+    int i = 0;
+    
+    // Linearly scan until the key is found 
+    // Note: In production code, you should also handle bounds to prevent an infinite loop if the key doesn't exist
+    while (H[(index + i) % SIZE] != key) {
+        i++;
+    }
+    
+    return (index + i) % SIZE;
+}
 
-//     // Insert a key
-//     bool Insert(int key)
-//     {
-//         int index = hashFunction(key);
-//         int firstDeleted = -1;
+int main() {
+    // Initialize Hash Table (HT) with all zeros representing empty spaces
+    int HT[SIZE] = {0};
 
-//         for (int i = 0; i < SIZE; i++)
-//         {
-//             int pos = probe(index, i);
+    // Inserting values from the images
+    Insert(HT, 12); // Hashes to index 2
+    Insert(HT, 25); // Hashes to index 5
+    Insert(HT, 35); // Hashes to index 5 -> Collides, probes to index 6
+    Insert(HT, 26); // Hashes to index 6 -> Collides, probes to index 7
 
-//             if (state[pos] == OCCUPIED)
-//             {
-//                 if (H[pos] == key)
-//                 {
-//                     cout << key << " already exists.\n";
-//                     return false;
-//                 }
-//             }
-//             else if (state[pos] == DELETED)
-//             {
-//                 if (firstDeleted == -1)
-//                     firstDeleted = pos;
-//             }
-//             else // EMPTY
-//             {
-//                 int target =
-//                     (firstDeleted != -1) ? firstDeleted : pos;
+    // Displaying the contents of the Hash Table
+    std::cout << "Hash Table contents:" << std::endl;
+    for (int i = 0; i < SIZE; i++) {
+        std::cout << "Index " << i << " -> " << HT[i] << std::endl;
+    }
 
-//                 H[target] = key;
-//                 state[target] = OCCUPIED;
+    // Testing the Search function
+    int searchKey = 35;
+    std::cout << "\nSearching for key " << searchKey << "..." << std::endl;
+    std::cout << "Found at index: " << Search(HT, searchKey) << std::endl;
 
-//                 cout << key << " inserted at index "
-//                      << target << ".\n";
-//                 return true;
-//             }
-//         }
-
-//         // Reuse a deleted slot if the table has no EMPTY slots
-//         if (firstDeleted != -1)
-//         {
-//             H[firstDeleted] = key;
-//             state[firstDeleted] = OCCUPIED;
-
-//             cout << key << " inserted at index "
-//                  << firstDeleted << ".\n";
-//             return true;
-//         }
-
-//         cout << "Hash table is full. Cannot insert "
-//              << key << ".\n";
-//         return false;
-//     }
-
-//     // Search for a key
-//     int Search(int key) const
-//     {
-//         int index = hashFunction(key);
-
-//         for (int i = 0; i < SIZE; i++)
-//         {
-//             int pos = probe(index, i);
-
-//             // An EMPTY slot means the key cannot occur later
-//             if (state[pos] == EMPTY)
-//                 return -1;
-
-//             if (state[pos] == OCCUPIED && H[pos] == key)
-//                 return pos;
-//         }
-
-//         return -1;
-//     }
-
-//     // Remove a key
-//     bool Remove(int key)
-//     {
-//         int pos = Search(key);
-
-//         if (pos == -1)
-//         {
-//             cout << key << " not found.\n";
-//             return false;
-//         }
-
-//         // Mark as DELETED, not EMPTY
-//         state[pos] = DELETED;
-
-//         cout << key << " removed from index "
-//              << pos << ".\n";
-//         return true;
-//     }
-
-//     // Display the hash table
-//     void Display() const
-//     {
-//         cout << "\nHash Table:\n";
-
-//         for (int i = 0; i < SIZE; i++)
-//         {
-//             cout << "[" << i << "] -> ";
-
-//             if (state[i] == EMPTY)
-//                 cout << "EMPTY";
-//             else if (state[i] == DELETED)
-//                 cout << "DELETED";
-//             else
-//                 cout << H[i];
-
-//             cout << '\n';
-//         }
-//     }
-// };
-
-// int main()
-// {
-//     HashTable HT(10);
-
-//     // Insert values
-//     HT.Insert(12);
-//     HT.Insert(22);
-//     HT.Insert(42);
-//     HT.Insert(32);
-
-//     HT.Display();
-
-//     // Search for a key
-//     int key = 22;
-//     int pos = HT.Search(key);
-
-//     if (pos != -1)
-//         cout << "\n" << key
-//              << " found at index " << pos << ".\n";
-//     else
-//         cout << "\n" << key << " not found.\n";
-
-//     // Search for a missing key
-//     key = 21;
-//     pos = HT.Search(key);
-
-//     if (pos != -1)
-//         cout << key << " found at index " << pos << ".\n";
-//     else
-//         cout << key << " not found.\n";
-
-//     // Delete and display
-//     HT.Remove(22);
-//     HT.Display();
-
-//     return 0;
-// }
+    return 0;
+}
 
 
 
@@ -325,204 +229,3 @@
 
 
 // quadratic probing
-#include <iostream>
-#include <vector>
-using namespace std;
-
-class QuadraticHashTable
-{
-private:
-    enum State
-    {
-        EMPTY,
-        OCCUPIED,
-        DELETED
-    };
-
-    vector<int> table;
-    vector<State> state;
-    int SIZE;
-
-    // Hash function: handles negative keys too
-    int hashFunction(int key) const
-    {
-        int index = key % SIZE;
-        return (index + SIZE) % SIZE;
-    }
-
-    // Quadratic probing: (h(key) + i^2) % SIZE
-    int quadraticProbe(int index, int i) const
-    {
-        long long offset = 1LL * i * i;
-        return (index + offset % SIZE) % SIZE;
-    }
-
-public:
-    explicit QuadraticHashTable(int size)
-        : SIZE(size > 0 ? size : 11),
-          table(SIZE),
-          state(SIZE, EMPTY)
-    {
-    }
-
-    // Insert a key
-    bool Insert(int key)
-    {
-        int index = hashFunction(key);
-        int firstDeleted = -1;
-
-        for (int i = 0; i < SIZE; i++)
-        {
-            int pos = quadraticProbe(index, i);
-
-            if (state[pos] == OCCUPIED)
-            {
-                if (table[pos] == key)
-                {
-                    cout << key << " already exists.\n";
-                    return false;
-                }
-            }
-            else if (state[pos] == DELETED)
-            {
-                if (firstDeleted == -1)
-                    firstDeleted = pos;
-            }
-            else // EMPTY
-            {
-                int target =
-                    (firstDeleted != -1) ? firstDeleted : pos;
-
-                table[target] = key;
-                state[target] = OCCUPIED;
-
-                cout << key << " inserted at index "
-                     << target << ".\n";
-                return true;
-            }
-        }
-
-        // If no EMPTY slot was found, reuse a deleted slot
-        if (firstDeleted != -1)
-        {
-            table[firstDeleted] = key;
-            state[firstDeleted] = OCCUPIED;
-
-            cout << key << " inserted at index "
-                 << firstDeleted << ".\n";
-            return true;
-        }
-
-        cout << "No available slot in the probe sequence "
-             << "for key " << key << ".\n";
-        return false;
-    }
-
-    // Search for a key; return its index or -1
-    int Search(int key) const
-    {
-        int index = hashFunction(key);
-
-        for (int i = 0; i < SIZE; i++)
-        {
-            int pos = quadraticProbe(index, i);
-
-            // An EMPTY slot means the key was not inserted
-            // farther along this probe sequence.
-            if (state[pos] == EMPTY)
-                return -1;
-
-            if (state[pos] == OCCUPIED &&
-                table[pos] == key)
-            {
-                return pos;
-            }
-        }
-
-        return -1;
-    }
-
-    // Delete a key without breaking the probe sequence
-    bool Remove(int key)
-    {
-        int pos = Search(key);
-
-        if (pos == -1)
-        {
-            cout << key << " not found; cannot remove.\n";
-            return false;
-        }
-
-        state[pos] = DELETED;
-
-        cout << key << " removed from index "
-             << pos << ".\n";
-        return true;
-    }
-
-    // Display the table
-    void Display() const
-    {
-        cout << "\nQuadratic Hash Table:\n";
-
-        for (int i = 0; i < SIZE; i++)
-        {
-            cout << "[" << i << "] -> ";
-
-            if (state[i] == EMPTY)
-                cout << "EMPTY";
-            else if (state[i] == DELETED)
-                cout << "DELETED";
-            else
-                cout << table[i];
-
-            cout << '\n';
-        }
-    }
-};
-
-int main()
-{
-    // 11 is prime; prime sizes are recommended
-    QuadraticHashTable HT(11);
-
-    cout << "--- Insertion ---\n";
-    HT.Insert(12);
-    HT.Insert(22);
-    HT.Insert(32);
-    HT.Insert(42);
-
-    HT.Display();
-
-    cout << "\n--- Searching ---\n";
-
-    int key = 32;
-    int pos = HT.Search(key);
-
-    if (pos != -1)
-        cout << key << " found at index " << pos << ".\n";
-    else
-        cout << key << " not found.\n";
-
-    key = 99;
-    pos = HT.Search(key);
-
-    if (pos != -1)
-        cout << key << " found at index " << pos << ".\n";
-    else
-        cout << key << " not found.\n";
-
-    cout << "\n--- Deletion ---\n";
-    HT.Remove(22);
-    HT.Display();
-
-    cout << "\n--- Insert after deletion ---\n";
-    HT.Insert(52);
-    HT.Display();
-
-    return 0;
-}
-
-
-
-
