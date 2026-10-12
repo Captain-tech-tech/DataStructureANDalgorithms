@@ -106,7 +106,7 @@ class LinkedList
     bool search(int val)  // checking whether the element is present in the link list or not
     {
         Node *curr = head;
-        while(curr->next != NULL)
+        while(curr != NULL)
         {
             if(curr->data == val)
              return true;
