@@ -40,7 +40,6 @@ public:
         if(pos == 1)
         {
             newNode->next = head;
-            newNode->previous = NULL;
 
             if(head != NULL)
                 head->previous = newNode;
