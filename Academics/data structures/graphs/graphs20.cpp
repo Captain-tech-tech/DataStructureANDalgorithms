@@ -378,4 +378,146 @@ int main() {
 
 
 
+// Kruskal's algorithm
+// #include <iostream>
+// using namespace std;
+
+// #define I 32767
+
+// // Edges are stored in three rows:
+// // edges[0] = starting vertices
+// // edges[1] = ending vertices
+// // edges[2] = edge weights
+// int edges[3][9] = {
+//     {1, 1, 2, 2, 3, 4, 4, 5, 5},
+//     {2, 6, 3, 7, 4, 5, 7, 6, 7},
+//     {25, 5, 12, 10, 18, 16, 14, 20, 18}
+// };
+
+// const int n = 7;  // Number of vertices
+// const int e = 9;  // Number of edges
+
+// // Negative values represent roots.
+// // The magnitude represents the component size.
+// int sets[n + 1] = {0, -1, -1, -1, -1, -1, -1, -1};
+
+// // included[j] = 1 means edge j has already been considered.
+// int included[e] = {0};
+
+// // Store the six selected MST edges.
+// int t[2][n - 1];
+
+// // Find the root of the component containing u.
+// int findRoot(int u)
+// {
+//     int x = u;
+
+//     while (sets[x] >= 0)
+//     {
+//         x = sets[x];
+//     }
+
+//     return x;
+// }
+
+// // Join two different components using union by size.
+// void unionSets(int u, int v)
+// {
+//     // u and v must be roots when this function is called.
+//     if (sets[u] < sets[v])
+//     {
+//         // u's component is larger.
+//         sets[u] += sets[v];
+//         sets[v] = u;
+//     }
+//     else
+//     {
+//         // v's component is at least as large.
+//         sets[v] += sets[u];
+//         sets[u] = v;
+//     }
+// }
+
+// void Kruskal()
+// {
+//     int i = 0;  // Number of edges selected
+//     int j, k;
+//     int min, u, v;
+
+//     while (i < n - 1)
+//     {
+//         min = I;
+//         k = -1;
+
+//         // Find the smallest-weight edge not considered before.
+//         for (j = 0; j < e; j++)
+//         {
+//             if (included[j] == 0 && edges[2][j] < min)
+//             {
+//                 min = edges[2][j];
+//                 k = j;
+
+//                 u = edges[0][j];
+//                 v = edges[1][j];
+//             }
+//         }
+
+//         // No more edges are available.
+//         if (k == -1)
+//         {
+//             cout << "Graph is disconnected; no spanning tree exists.\n";
+//             return;
+//         }
+
+//         // Mark this edge as considered, whether accepted or rejected.
+//         included[k] = 1;
+
+//         int rootU = findRoot(u);
+//         int rootV = findRoot(v);
+
+//         // If roots differ, adding the edge will not create a cycle.
+//         if (rootU != rootV)
+//         {
+//             t[0][i] = u;
+//             t[1][i] = v;
+
+//             unionSets(rootU, rootV);
+//             i++;
+//         }
+//     }
+
+//     // Print the Minimum Spanning Tree.
+//     int totalCost = 0;
+
+//     cout << "Edges in the Minimum Spanning Tree:\n";
+
+//     for (i = 0; i < n - 1; i++)
+//     {
+//         u = t[0][i];
+//         v = t[1][i];
+
+//         // Find the weight of the selected edge.
+//         for (j = 0; j < e; j++)
+//         {
+//             if ((edges[0][j] == u && edges[1][j] == v) ||
+//                 (edges[0][j] == v && edges[1][j] == u))
+//             {
+//                 cout << u << " -- " << v
+//                      << " : weight = " << edges[2][j] << '\n';
+
+//                 totalCost += edges[2][j];
+//                 break;
+//             }
+//         }
+//     }
+
+//     cout << "\nTotal MST cost = " << totalCost << '\n';
+// }
+
+// int main()
+// {
+//     Kruskal();
+//     return 0;
+// }
+
 
