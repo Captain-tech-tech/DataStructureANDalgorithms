@@ -70,33 +70,32 @@ void selectionSort(vector<int>&arr)
     }
 }
 
-int partition(vector<int>& A, int l, int h)
-{
-    int pivot = A[l];
-    int i = l, j = h;
 
+int partition(vector<int>&arr, int l, int h)
+{
+    int pivot = arr[l];
+    int i = l-1, j = h+1;
     do
     {
-        do { i++; } while (A[i] <= pivot);
-        do { j--; } while (A[j] > pivot);
+        do{i++;} while(pivot>=arr[i]);
+        do{j--;} while(pivot<arr[j]);
 
-        if (i < j)
-            swap(A[i], A[j]);
-
-    } while (i < j);
-
-    swap(A[l], A[j]);
+        if(i<j)
+            swap(arr[i], arr[j]);
+    }
+    while(i<j);
+    swap(arr[l],arr[j]);
     return j;
 }
 
 // recursive function to actually sort the array
-void quickSort(vector<int>& A, int l, int h)
+void quickSort(vector<int>&arr, int l, int h)
 {
-    if (l < h)
+    if(l<h)
     {
-        int j = partition(A, l, h);
-        quickSort(A, l, j);     // sorts the left side
-        quickSort(A, j + 1, h); // sorts the right side
+        int j = partition(arr,l,h);
+        quickSort(arr,l,j);  // sorts the left side
+        quickSort(arr,j+1,h);  // sorts the right side
     }
 }
 
@@ -336,18 +335,18 @@ void shellSort(vector<int>& A)
 
 int main()
 {
-    // vector<int>arr = {8,5,7,3,2};
+    vector<int>arr1 = {8,5,7,3,2};
 
     // bubbleSort(arr);
     // insertionSort(arr);
     // selectionSort(arr);
     // vector<int>arr1 = {8,5,7,3,2,INT_MAX};
-    // quickSort(arr1,0,arr1.size()-1);
+    quickSort(arr1,0,arr1.size()-1);
 
-    // for(int i=0;i<arr.size()-1;i++)
-    //     cout<<arr[i]<<"  ";
+    for(int i=0;i<arr1.size();i++)
+        cout<<arr1[i]<<"  ";
 
-    vector<int> arr = {8, 3, 7, 4, 9, 2, 6, 5};
+    // vector<int> arr = {8, 3, 7, 4, 9, 2, 6, 5};
     // RMergeSort(arr,0,arr.size()-1);
     
 
@@ -357,10 +356,10 @@ int main()
 
     // binSort(arr);
 
-    shellSort(arr);
+    // shellSort(arr);
 
-    for (int num : arr)
-        cout << num << " ";    
+    // for (int num : arr)
+        // cout << num << " ";    
     
     return 0;
 }
