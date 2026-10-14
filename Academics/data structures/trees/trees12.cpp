@@ -34,10 +34,10 @@ private:
 
     struct StackNode
     {
-        intptr_t data;
+        Node* data;
         StackNode *next;
 
-        StackNode(intptr_t val, StackNode *oldTop)
+        StackNode(Node* val, StackNode *oldTop)
         {
             data = val;
             next = oldTop;
@@ -63,7 +63,7 @@ public:
 
 
     // Push
-    void push(intptr_t val)
+    void push(Node* val)
     {
         StackNode *newNode =
             new StackNode(val, top);
@@ -74,17 +74,17 @@ public:
 
 
     // Pop
-    intptr_t pop()
+    Node* pop()
     {
         if (isEmpty())
         {
             cout << "Stack underflow" << endl;
-            return 0;
+            return nullptr;
         }
 
         StackNode *popNode = top;
 
-        intptr_t topVal = popNode->data;
+        Node* topVal = popNode->data;
 
         top = top->next;
 
@@ -97,12 +97,12 @@ public:
 
 
     // Peek
-    intptr_t peek()
+    Node* peek()
     {
         if (isEmpty())
         {
             cout << "Stack underflow" << endl;
-            return 0;
+            return nullptr;
         }
 
         return top->data;
@@ -136,7 +136,6 @@ public:
         }
     }
 };
-
 
 // TREE CLASS
 class Tree
@@ -254,7 +253,7 @@ public:
                 // Save current node so that we can later
                 // come back and process its right subtree.
                 st.push(
-                    reinterpret_cast<intptr_t>(t)
+                    t
                 );
 
                 // Move to left subtree
@@ -263,7 +262,7 @@ public:
             else
             {
                 // Get previous node
-                t = reinterpret_cast<Node *>(st.pop());
+                t = st.pop();
 
                 // Move to right subtree
                 t = t->rchild;
@@ -291,7 +290,7 @@ public:
             {
                 // Save current node
                 st.push(
-                    reinterpret_cast<intptr_t>(t)
+                    t
                 );
 
                 // Go as far left as possible
@@ -300,7 +299,7 @@ public:
             else
             {
                 // Get the last saved node
-                t = reinterpret_cast<Node *>(st.pop());
+                t = st.pop();
 
                 // Visit the node
                 cout << t->data << " ";
@@ -331,6 +330,18 @@ public:
 
         LinkedStack st;
 
+        // To keep your logic exactly the same without intptr_t casting, 
+        // we use a companion tracking state to remember if it is our 1st or 2nd time seeing the node.
+        // false = Positive/First visit, true = Negative/Second visit
+        class LinkedBoolStack {
+        private:
+            struct BNode { bool d; BNode* n; BNode(bool v, BNode* o){ d = v; n = o; } };
+            BNode* top = nullptr;
+        public:
+            void push(bool v) { top = new BNode(v, top); }
+            bool pop() { BNode* old = top; bool v = old->d; top = top->n; delete old; return v; }
+        } visitTrack;
+
         Node *t = root;
 
 
@@ -340,11 +351,12 @@ public:
             {
                 // First visit to this node, We DON'T print it yet because Postorder is: Left -> Right -> Root
 
-                intptr_t address =
-                    reinterpret_cast<intptr_t>(t);
+                Node* address =
+                    t;
 
                 // Push positive address.Positive means:"I have reached this node for the first time."
                 st.push(address);
+                visitTrack.push(false); // false acts as the positive/first-time state
 
                 // Go to left subtree
                 t = t->lchild;
@@ -352,21 +364,23 @@ public:
             else
             {
                 // Get the node from stack
-                intptr_t temp = st.pop();
+                Node* temp = st.pop();
+                bool isNegativeVisit = visitTrack.pop();
 
 
                 // POSITIVE
                 // This is the first time we are processing this node after coming back from the left subtree. We now need to process the right subtree.
 
-                if (temp > 0)
+                if (!isNegativeVisit)
                 {
                     // Convert integer back into Node*
                     Node *p =
-                        reinterpret_cast<Node *>(temp);
+                        temp;
 
                     // Push the node again, but this time with a negative marker.
                     // Negative means: "Left and right subtrees will be processed;  print this node when we see it again."
-                    st.push(-temp);
+                    st.push(temp);
+                    visitTrack.push(true); // true acts as the negative/second-time state
 
                     // Move to right subtree
                     t = p->rchild;
@@ -376,10 +390,10 @@ public:
                 else
                 {
                     // Convert negative value back to positive
-                    intptr_t address = -temp;
+                    Node* address = temp;
 
                     Node *p =
-                        reinterpret_cast<Node *>(address);
+                        address;
 
 
                     // Visit the node
