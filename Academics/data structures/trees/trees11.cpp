@@ -219,8 +219,8 @@ public:
     }
     // int count(Node *p)     // for counting number of nodes
     // {
-    //     if(root)
-    //         return count(root->lchild)+count(root->rchild)+1;
+    //     if(p != nullptr)
+    //         return count(p->lchild)+count(p->rchild)+1;
     //     return 0;
     // }
 
@@ -229,71 +229,59 @@ public:
     // for counting number of leaf nodes
     int countLeafNodes(Node *p)
     {
-        int x,y;
-        if(p!=nullptr)
-        {
-            x = countLeafNodes(p->lchild);
-            y = countLeafNodes(p->rchild);
-            if(p->lchild==nullptr && p->rchild==nullptr)   // this condition because leaf nodes are with the degree 0
-                return x+y+1;
-            else
-                return x+y;
-        }
-        return 0;
+        if (p == nullptr) 
+            return 0;
+        
+        if (p->lchild == nullptr && p->rchild == nullptr)   
+            return 1;
+        
+        return countLeafNodes(p->lchild) + countLeafNodes(p->rchild);
     }
 
-    // (2)
-    // for counting number of non-leaf nodes with degree 2 only
-    int countNonLeafNodes(Node *p)
+    // (2)  Count Non-Leaf Nodes with Degree 2 Only
+    int countNodesDegreeTwo(Node *p)
     {
-        int x,y;
-        if(p!=nullptr)
-        {
-            x = countLeafNodes(p->lchild);
-            y = countLeafNodes(p->rchild);
-            if(p->lchild!=nullptr && p->rchild!=nullptr)   // this condition because non-leaf nodes are with the degree 2 here
-                return x+y+1;
-            else
-                return x+y;
-        }
-        return 0;
+        if (p == nullptr) 
+            return 0;
+
+        int x = countNodesDegreeTwo(p->lchild);
+        int y = countNodesDegreeTwo(p->rchild);
+
+        if (p->lchild != nullptr && p->rchild != nullptr)   
+            return x + y + 1;
+        else
+            return x + y;
     }
 
-    // (3)
-    // for counting number of non-leaf nodes with degree 1 or 2 both
-    int countNonleafnodes(Node *p)
+    // (3) Count Non-Leaf Nodes (Degree 1 or 2 both)
+    int countAllNonLeafNodes(Node *p)
     {
-        int x,y;
-        if(p!=nullptr)
-        {
-            x = countLeafNodes(p->lchild);
-            y = countLeafNodes(p->rchild);
-            if(p->lchild!=nullptr || p->rchild!=nullptr)   // this condition because non-leaf nodes are with the degree 1 or 2 here
-                return x+y+1;
-            else
-                return x+y;
-        }
-        return 0;
+        if (p == nullptr) 
+            return 0;
+
+        int x = countAllNonLeafNodes(p->lchild);
+        int y = countAllNonLeafNodes(p->rchild);
+
+        if (p->lchild != nullptr || p->rchild != nullptr)   
+            return x + y + 1;
+        else
+            return x + y;
     }    
 
-
-    // (4)
-    // for counting number of non-leaf nodes with degree 1 only
-    int countNonleafNodes(Node *p)
+    // (4) Count Non-Leaf Nodes with Degree 1 Only
+    int countNodesDegreeOne(Node *p)
     {
-        int x,y;
-        if(p!=nullptr)
-        {
-            x = countLeafNodes(p->lchild);
-            y = countLeafNodes(p->rchild);
-            // if((p->lchild!=nullptr && p->rchild==nullptr) || (p->lchild==nullptr && p->rchild!=nullptr)) // this condition because non-leaf nodes are with the degree 1 or 2 here
-            // or
-            if(p->lchild!=nullptr ^ p->rchild!=nullptr)
-                return x+y+1;
-            else
-                return x+y;
-        }
-        return 0;
+        if (p == nullptr) 
+            return 0;
+
+        int x = countNodesDegreeOne(p->lchild);
+        int y = countNodesDegreeOne(p->rchild);
+
+        // Your original XOR (^) logic works perfectly here
+        if ((p->lchild != nullptr) ^ (p->rchild != nullptr))
+            return x + y + 1;
+        else
+            return x + y;
     }    
 
     
