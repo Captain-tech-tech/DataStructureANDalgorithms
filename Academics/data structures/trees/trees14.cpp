@@ -73,9 +73,7 @@ private:
         int leftHeight = NodeHeight(p->lchild);
         int rightHeight = NodeHeight(p->rchild);
 
-        p->height =
-            (leftHeight > rightHeight ? leftHeight : rightHeight)
-            + 1;
+        p->height = (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
     }
 
 
@@ -327,19 +325,16 @@ private:
         if (p == nullptr)
             return nullptr;
 
-
         // Search left
         if (key < p->data)
         {
             p->lchild = RDelete(p->lchild, key);
         }
-
         // Search right
         else if (key > p->data)
         {
             p->rchild = RDelete(p->rchild, key);
         }
-
         // Node found
         else
         {
@@ -349,7 +344,6 @@ private:
                 p->rchild == nullptr)
             {
                 delete p;
-
                 return nullptr;
             }
 
@@ -358,155 +352,102 @@ private:
             if (p->lchild == nullptr)
             {
                 Node *temp = p->rchild;
-
                 delete p;
-
                 return temp;
             }
-
 
             // CASE 3:
             // Only left child
             if (p->rchild == nullptr)
             {
                 Node *temp = p->lchild;
-
                 delete p;
-
                 return temp;
             }
-
 
             // CASE 4:
             // Two children
             Node *q = InPre(p->lchild);
 
-
             // Copy predecessor value
             p->data = q->data;
-
 
             // Delete predecessor
             p->lchild =
                 RDelete(p->lchild, q->data);
         }
 
-
         // Update height after deletion
         UpdateHeight(p);
 
-
         // Calculate balance factor
-
         int bf = BalanceFactor(p);
-
 
         // LEFT HEAVY AFTER DELETION
         if (bf == 2)
         {
             int childBF = BalanceFactor(p->lchild);
 
-
-            // -----------------------------------------------
             // L1 CASE
-            //
             // BF(p) = +2
             // BF(left child) = +1
-            //
             // LL rotation
-            // -----------------------------------------------
-
             if (childBF == 1)
             {
                 return LLRotation(p);
             }
 
-
-            // -----------------------------------------------
             // L0 CASE
-            //
             // BF(p) = +2
             // BF(left child) = 0
-            //
             // LL rotation
-            // -----------------------------------------------
-
             else if (childBF == 0)
             {
                 return LLRotation(p);
             }
 
-
-            // -----------------------------------------------
             // L-1 CASE
-            //
             // BF(p) = +2
             // BF(left child) = -1
-            //
             // LR rotation
-            // -----------------------------------------------
-
             else if (childBF == -1)
             {
                 return LRRotation(p);
             }
         }
 
-
-        // ====================================================
         // RIGHT HEAVY AFTER DELETION
-        // ====================================================
-
         if (bf == -2)
         {
             int childBF = BalanceFactor(p->rchild);
 
-
-            // -----------------------------------------------
             // R-1 CASE
-            //
             // BF(p) = -2
             // BF(right child) = -1
-            //
             // RR rotation
-            // -----------------------------------------------
-
             if (childBF == -1)
             {
                 return RRRotation(p);
             }
 
-
-            // -----------------------------------------------
             // R0 CASE
-            //
             // BF(p) = -2
             // BF(right child) = 0
-            //
             // RR rotation
-            // -----------------------------------------------
-
             else if (childBF == 0)
             {
                 return RRRotation(p);
             }
 
-
-            // -----------------------------------------------
             // R1 CASE
-            //
             // BF(p) = -2
             // BF(right child) = +1
-            //
             // RL rotation
-            // -----------------------------------------------
-
             else if (childBF == 1)
             {
                 return RLRotation(p);
             }
         }
-
 
         return p;
     }
