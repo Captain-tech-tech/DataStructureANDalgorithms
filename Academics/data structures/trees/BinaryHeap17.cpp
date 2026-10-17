@@ -283,6 +283,7 @@ int main()
 
 
 
+
 // first we insert value in the array, and then this function is called for rearranging the values
 // insertion time for one element is always O(log2(n))
 // void Insert(int A[], int n)  // A[] represents the binary max heap , n represent the index at which the new element is stored
@@ -319,6 +320,281 @@ int main()
 
 // larger the element higher the priority
 // inertion takes O(1) time and deletion takes O(n) time
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// #include <iostream>
+// #include <vector>
+// #include <algorithm>
+// using namespace std;
+
+// class MinHeap
+// {
+// private:
+//     // Index 0 is unused; actual heap starts at index 1.
+//     vector<int> A = {0};
+
+//     // Restore min-heap property by moving a node downward.
+//     void SiftDown(int i, int n)
+//     {
+//         while (2 * i <= n)
+//         {
+//             int left = 2 * i;
+//             int right = 2 * i + 1;
+//             int smallest = left;
+
+//             // Find the smaller child.
+//             if (right <= n && A[right] < A[left])
+//             {
+//                 smallest = right;
+//             }
+
+//             // If parent is already smaller, heap property is satisfied.
+//             if (A[i] <= A[smallest])
+//             {
+//                 break;
+//             }
+
+//             swap(A[i], A[smallest]);
+//             i = smallest;
+//         }
+//     }
+
+// public:
+//     // Insert an element into the min-heap.
+//     void Insert(int value)
+//     {
+//         A.push_back(value);
+
+//         int i = static_cast<int>(A.size()) - 1;
+
+//         // Sift up until the min-heap property is restored.
+//         while (i > 1 && A[i] < A[i / 2])
+//         {
+//             swap(A[i], A[i / 2]);
+//             i = i / 2;
+//         }
+//     }
+
+//     // Get the minimum element without removing it.
+//     bool GetMin(int &result) const
+//     {
+//         if (Empty())
+//         {
+//             return false;
+//         }
+
+//         result = A[1];
+//         return true;
+//     }
+
+//     // Remove and return the minimum element.
+//     bool DeleteMin(int &removed)
+//     {
+//         if (Empty())
+//         {
+//             return false;
+//         }
+
+//         removed = A[1];
+
+//         // If only one element exists, remove it.
+//         if (Size() == 1)
+//         {
+//             A.pop_back();
+//             return true;
+//         }
+
+//         // Move the last element to the root.
+//         A[1] = A.back();
+//         A.pop_back();
+
+//         // Restore min-heap property.
+//         SiftDown(1, Size());
+
+//         return true;
+//     }
+
+//     // Build a min-heap from an existing vector.
+//     void BuildHeap(const vector<int> &values)
+//     {
+//         A.clear();
+//         A.push_back(0);
+
+//         for (int value : values)
+//         {
+//             A.push_back(value);
+//         }
+
+//         int n = Size();
+
+//         // Start from the last internal node and sift down.
+//         for (int i = n / 2; i >= 1; --i)
+//         {
+//             SiftDown(i, n);
+//         }
+//     }
+
+//     // Display heap elements in array order.
+//     void Display() const
+//     {
+//         if (Empty())
+//         {
+//             cout << "Heap is empty.\n";
+//             return;
+//         }
+
+//         cout << "Min-Heap: ";
+
+//         for (int i = 1; i <= Size(); ++i)
+//         {
+//             cout << A[i] << " ";
+//         }
+
+//         cout << '\n';
+//     }
+
+//     // Return the number of elements.
+//     int Size() const
+//     {
+//         return static_cast<int>(A.size()) - 1;
+//     }
+
+//     // Check whether the heap is empty.
+//     bool Empty() const
+//     {
+//         return Size() == 0;
+//     }
+
+//     // HeapSort: return elements in ascending order.
+//     // The original heap remains unchanged.
+//     vector<int> HeapSort() const
+//     {
+//         vector<int> result = A;
+
+//         int n = static_cast<int>(result.size()) - 1;
+
+//         // Local helper lambda to restore min-heap property.
+//         auto siftDown = [&result](int i, int end)
+//         {
+//             while (2 * i <= end)
+//             {
+//                 int left = 2 * i;
+//                 int right = 2 * i + 1;
+//                 int smallest = left;
+
+//                 if (right <= end &&
+//                     result[right] < result[left])
+//                 {
+//                     smallest = right;
+//                 }
+
+//                 if (result[i] <= result[smallest])
+//                 {
+//                     break;
+//                 }
+
+//                 swap(result[i], result[smallest]);
+//                 i = smallest;
+//             }
+//         };
+
+//         // Move each minimum to the end of the active heap.
+//         for (int end = n; end > 1; --end)
+//         {
+//             swap(result[1], result[end]);
+//             siftDown(1, end - 1);
+//         }
+
+//         // A min-heap produces descending order with this
+//         // swap-to-the-end approach, so reverse the result.
+//         reverse(result.begin() + 1, result.end());
+
+//         // Remove the unused index 0 before returning.
+//         result.erase(result.begin());
+
+//         return result;
+//     }
+// };
+
+// int main()
+// {
+//     MinHeap heap;
+
+//     heap.Insert(40);
+//     heap.Insert(20);
+//     heap.Insert(50);
+//     heap.Insert(10);
+//     heap.Insert(30);
+
+//     heap.Display();
+
+//     int result;
+
+//     if (heap.GetMin(result))
+//     {
+//         cout << "Minimum element: " << result << '\n';
+//     }
+
+//     int removed;
+
+//     if (heap.DeleteMin(removed))
+//     {
+//         cout << "Deleted minimum: " << removed << '\n';
+//     }
+
+//     heap.Display();
+
+//     vector<int> values = {45, 12, 30, 8, 25, 60};
+
+//     heap.BuildHeap(values);
+
+//     cout << "\nAfter BuildHeap:\n";
+//     heap.Display();
+
+//     vector<int> sorted = heap.HeapSort();
+
+//     cout << "Sorted elements: ";
+
+//     for (int value : sorted)
+//     {
+//         cout << value << " ";
+//     }
+
+//     cout << '\n';
+
+//     cout << "Heap size: " << heap.Size() << '\n';
+//     cout << "Is heap empty? "
+//          << (heap.Empty() ? "Yes" : "No") << '\n';
+
+//     return 0;
+// }
+
+
+
+
+
+
+
+
+
 
 
 
