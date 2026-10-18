@@ -13,6 +13,7 @@
 #include<list>
 #include<vector>
 #include<queue>
+#include<stack>
 using namespace std;
 
 class Graph
@@ -163,6 +164,61 @@ public:
         }
         return false;
     }
+
+    // topological sorting : it can be applied on directed acyclic graph (DAG)
+    // it is linear ordering of all the vertices such that every directed edge u-->v, vertex u comes before v in the order (it is dfs based)
+    // there can be multiple valid topological orderings
+    // it is used to solve dependency based problems 
+    // steps:
+    // first the dependent of a vertex are push in the stack and then the vertex itself
+    // then one by one elements are pop from the stack and store in an array(containing the topological sorted number)
+
+    //  5 ------> 0 <------ 4
+    // |                    |
+    // v                    v
+    // 2                   1
+    //  \                  ^
+    //   v                /
+    //    3 --------------
+    // Edges:
+    // 5 -> 0
+    // 4 -> 0
+    // 5 -> 2
+    // 2 -> 3
+    // 3 -> 1
+    // 4 -> 1
+    // Possible Topological Sorts:
+    // 1) 4, 2, 3, 5, 1, 0
+    // 2) 5, 4, 0, 2, 3, 1
+    // 3) 5, 4, 2, 0, 3, 1
+
+    void dfs(int curr, vector<bool> &vis, stack<int> &s)
+    {
+        vis[curr] = true;
+
+        for(int v : l[curr])
+            if(!vis[v])
+                dfs(v, vis, s);
+        
+        s.push(curr);
+    }
+
+    void topoSort()   // O(V+E)
+    {
+        vector<bool>vis(V,false);
+        stack<int>s;
+
+        for(int i=0;i<V;i++)
+            if(!vis[i])
+                dfs(i, vis, s);
+
+        while(s.size()>0)
+        {
+            cout<<s.top()<<"  ";
+            s.pop();
+        }
+        cout<<endl;
+    }
 };
 
 int main()
@@ -186,8 +242,22 @@ int main()
     gg.addEdge(3, 0);
 
     cout<<"cycle finding in directed graph : "<<gg.iscycleD()<<endl;
+
+    // directed acyclic graph for topological sorting
+    Graph gts(6);
+    gts.addEdge(3, 1);
+    gts.addEdge(2, 3);
+    gts.addEdge(4, 0);
+    gts.addEdge(4, 1);
+    gts.addEdge(5, 0);
+    gts.addEdge(5, 3);
+
+    gts.topoSort();
     return 0;
 }
+
+
+
 
 
 
