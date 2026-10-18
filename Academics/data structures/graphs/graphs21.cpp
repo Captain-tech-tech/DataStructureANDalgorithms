@@ -12,6 +12,7 @@
 #include<iostream>
 #include<list>
 #include<vector>
+#include<queue>
 using namespace std;
 
 class Graph
@@ -80,6 +81,88 @@ public:
         }
         return false;
     }
+
+
+    bool isCycleUndirBFS(int src, vector<bool>&vis)
+    {
+        queue<pair<int,int>>q;
+        q.push({src,-1});
+
+        vis[src] = true;
+
+        while(!q.empty())
+        {
+            int u = q.front().first;
+            int parU = q.front().second;
+
+            q.pop();
+            list<int>neighbors = l[u];
+            for(int v:neighbors)
+            {
+                if(!vis[v])
+                {
+                    q.push({v,u});
+                    vis[v] = true;
+                }
+                else if(v != parU)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    bool iscycle()
+    {
+        vector<bool>vis(V,false);
+
+        for(int i=0;i<V;i++)
+        {
+            if(!vis[i])
+                if(isCycleUndirBFS(i,vis))
+                    return true;
+        }
+        return false;
+    }
+
+    bool isCycleDirectedDFS(int curr, vector<bool> &vis, vector<bool> &recPath)
+    {
+        vis[curr] = true;
+
+        recPath[curr] = true;
+
+        for(int v : l[curr])
+        {
+            if(!vis[v])
+            {
+                if(isCycleDirectedDFS(v, vis, recPath))
+                    return true;
+            }
+            else if(recPath[v])
+                return true;
+        }
+        recPath[curr] = false;
+        return false;
+    }
+
+    bool iscycleD()
+    {
+        vector<bool> vis(V, false);
+        vector<bool> recPath(V, false);
+
+        for(int i=0;i<V;i++)
+        {
+            if(!vis[i])
+            {
+                if(isCycleDirectedDFS(i, vis, recPath))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 };
 
 int main()
@@ -94,9 +177,20 @@ int main()
 
     g.print();
 
-    cout<<"Cycle : "<<g.isCycle()<<endl;
+    cout<<"Cycle : "<<g.iscycle()<<endl;
+
+    Graph gg(4);
+    gg.addEdge(1, 0);
+    gg.addEdge(0, 2);
+    gg.addEdge(2, 3);
+    gg.addEdge(3, 0);
+
+    cout<<"cycle finding in directed graph : "<<gg.iscycleD()<<endl;
     return 0;
 }
+
+
+
 
 
 
