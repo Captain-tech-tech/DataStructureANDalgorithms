@@ -301,112 +301,236 @@
 
 
 // disjoint set union (DSU)
+// #include <iostream>
+// #include <vector>
+
+// using namespace std;
+
+// class DisjointSet 
+// {
+//     int n;
+//     vector<int> par;
+//     vector<int> rank;
+
+// public:
+//     // initialization (for i = 0 to n)
+//     DisjointSet(int n) {
+//         this->n = n;
+//         par.resize(n + 1);
+//         rank.resize(n + 1, 0);
+//         for (int i = 0; i <= n; i++) 
+//         {
+//             par[i] = i;
+//         }
+//     }
+
+//     // find(x) function
+//     int find(int x) 
+//     {
+//         if (par[x] == x) 
+//         {
+//             return x;
+//         }
+//         // recursive step 
+//         // return find(par[x]);  // (1) way
+        
+//         // path compression optimization : it helps in shallow tree and avoid skewed tree(skewed tree is not optimized)
+//         //it can be change this to 'return par[x] = find(par[x]);' to enable path compression, which makes it much faster!
+//         return par[x] = find(par[x]);  // (2) way
+//     }
+
+//     // union(a, b) function
+//     void unionByRank(int a, int b) 
+//     {
+//         int parA = find(a);
+//         int parB = find(b);
+
+//         // if parents are the same, they are already in the same set
+//         if (parA == parB) 
+//         {
+//             return;
+//         }
+
+//         // Case 1: Ranks are equal
+//         if (rank[parA] == rank[parB]) 
+//         {
+//             par[parB] = parA;
+//             rank[parA]++;
+//         }
+//         // Case 2: Rank of A is greater
+//         else if (rank[parA] > rank[parB]) 
+//         {
+//             par[parB] = parA;
+//         }
+//         // Case 3: Rank of B is greater
+//         else 
+//         {
+//             par[parA] = parB;
+//         }
+//     }
+
+//     // additional function for values printing (not part of data structure)
+//     void getInfo()
+//     {
+//         for(int i=0;i<n;i++)
+//         {
+//             cout<<par[i]<<" ";
+//         }
+
+//         cout<<endl;
+//         for(int i=0;i<n;i++)
+//         {
+//             cout<<rank[i]<<" ";
+//         }
+//         cout<<endl;
+//     }
+// };
+
+// int main() 
+// {
+//     DisjointSet dsu(6);
+
+//     dsu.unionByRank(0, 2);
+//     cout << "Find(2): " << dsu.find(2) << endl; // Output: 0
+
+//     dsu.unionByRank(1, 3);
+//     dsu.unionByRank(2, 5);
+//     dsu.unionByRank(0, 3);
+
+//     cout << "Find(2) after merges: " << dsu.find(2) << endl; // Output: 0
+    
+//     dsu.unionByRank(0, 4);
+
+//     dsu.getInfo();
+
+//     return 0;
+// }
+
+
+
+
+
+
+// Kruskal's algorithm
 #include <iostream>
 #include <vector>
+#include <algorithm> 
 
 using namespace std;
 
-class DisjointSet 
+class Edge 
 {
-    int n;
-    vector<int> par;
-    vector<int> rank;
-
 public:
-    // initialization (for i = 0 to n)
-    DisjointSet(int n) {
-        this->n = n;
-        par.resize(n + 1);
-        rank.resize(n + 1, 0);
-        for (int i = 0; i <= n; i++) 
+    int u, v, wt;
+
+    Edge(int u, int v, int wt) 
+    {
+        this->u = u;
+        this->v = v;
+        this->wt = wt;
+    }
+
+    // Operator overload to sort edges by weight automatically
+    bool operator<(const Edge &other) const 
+    {
+        return this->wt < other.wt;
+    }
+};
+
+class Graph 
+{
+public:
+    int V;
+    vector<Edge> edges;
+    vector<int> par, rank;
+
+    Graph(int V) 
+    {
+        this->V = V;
+        for (int i = 0; i < V; i++) 
         {
-            par[i] = i;
+            par.push_back(i);
+            rank.push_back(0);
         }
     }
 
-    // find(x) function
+    void addEdge(int u, int v, int wt) 
+    {
+        edges.push_back(Edge(u, v, wt));
+    }
+
+    // Find function with Path Compression
     int find(int x) 
     {
         if (par[x] == x) 
         {
             return x;
         }
-        // recursive step 
-        // return find(par[x]);  // (1) way
-        
-        // path compression optimization : it helps in shallow tree and avoid skewed tree(skewed tree is not optimized)
-        //it can be change this to 'return par[x] = find(par[x]);' to enable path compression, which makes it much faster!
-        return par[x] = find(par[x]);  // (2) way
+        return par[x] = find(par[x]);
     }
 
-    // union(a, b) function
+    // Union function
     void unionByRank(int a, int b) 
     {
         int parA = find(a);
         int parB = find(b);
 
-        // if parents are the same, they are already in the same set
-        if (parA == parB) 
-        {
-            return;
-        }
+        if (parA == parB) return;
 
-        // Case 1: Ranks are equal
-        if (rank[parA] == rank[parB]) 
+        if (rank[parA] > rank[parB]) 
+        {
+            par[parB] = parA;
+        } else if (rank[parA] < rank[parB]) 
+        {
+            par[parA] = parB;
+        } else 
         {
             par[parB] = parA;
             rank[parA]++;
         }
-        // Case 2: Rank of A is greater
-        else if (rank[parA] > rank[parB]) 
-        {
-            par[parB] = parA;
-        }
-        // Case 3: Rank of B is greater
-        else 
-        {
-            par[parA] = parB;
-        }
     }
 
-    // additional function for values printing (not part of data structure)
-    void getInfo()
-    {
-        for(int i=0;i<n;i++)
+    // Kruskal's Algorithm with Count Optimization
+    void kruskal() // O(E log E)
+    { 
+        sort(edges.begin(), edges.end()); 
+        int mstCost = 0;
+        int count = 0; // Tracks the number of edges added to the MST
+
+        // OPTIMIZATION: Loop breaks early once count reaches V-1
+        for (int i = 0; i < edges.size() && count < V - 1; i++) 
         {
-            cout<<par[i]<<" ";
+            Edge e = edges[i];
+
+            int parU = find(e.u);
+            int parV = find(e.v);
+
+            if (parU != parV) 
+            { // No cycle detected
+                unionByRank(e.u, e.v);
+                mstCost += e.wt;
+                count++;     // increment edge count
+                cout << "Included Edge: " << e.u << " - " << e.v << " (w: " << e.wt << ")" << endl;
+            }
         }
 
-        cout<<endl;
-        for(int i=0;i<n;i++)
-        {
-            cout<<rank[i]<<" ";
-        }
-        cout<<endl;
+        cout << "MST Cost: " << mstCost << endl;
     }
 };
 
-int main() 
-{
-    DisjointSet dsu(6);
+int main() {
+    Graph graph(4);
 
-    dsu.unionByRank(0, 2);
-    cout << "Find(2): " << dsu.find(2) << endl; // Output: 0
+    graph.addEdge(0, 1, 10);
+    graph.addEdge(0, 2, 6);
+    graph.addEdge(0, 3, 5);
+    graph.addEdge(1, 3, 15);
+    graph.addEdge(2, 3, 4);
 
-    dsu.unionByRank(1, 3);
-    dsu.unionByRank(2, 5);
-    dsu.unionByRank(0, 3);
-
-    cout << "Find(2) after merges: " << dsu.find(2) << endl; // Output: 0
-    
-    dsu.unionByRank(0, 4);
-
-    dsu.getInfo();
+    graph.kruskal();
 
     return 0;
 }
-
-
 
 
 
