@@ -29,10 +29,12 @@ public:
         l = new list<int>[V];
     }
 
-    void addEdge(int u, int v)
+    void addEdge(int u, int v, bool isDirected = false)
     {
-        l[u].push_back(v);
-        l[v].push_back(u);
+        l[u].push_back(v); // u points to v
+        if (!isDirected) {
+            l[v].push_back(u); // v only points back to u if it is UNDIRECTED
+        }
     }
 
     void print()
@@ -219,6 +221,55 @@ public:
         }
         cout<<endl;
     }
+
+    // topological sorting using kahn's algorithm
+    void ktopoSort()
+    {
+        vector<int>res;
+        // calculate indegree
+        vector<int> indeg(V, 0);
+        for(int u=0;u<V;u++)
+        {
+            for(int v: l[u])
+                indeg[v]++;
+        }
+
+        // 0 indeg --> enqueue
+        queue<int>q;
+        for(int i=0;i<V;i++)
+        {
+            if(indeg[i]==0)
+                q.push(i);
+        }
+
+        // bfs
+        while(!q.empty())
+        {
+            int curr = q.front();
+            q.pop();
+
+            res.push_back(curr);
+
+            for(int v:l[curr])
+            {
+                indeg[v]--;
+                if(indeg[v]==0)
+                    q.push(v);
+            }
+        }
+
+        // Check if a cycle exists
+        if (res.size() != V) 
+        {
+        cout << "Error: The graph contains a cycle! Topological sort is impossible." << endl;
+        return;
+        }
+
+        // print result if it's a valid DAG
+        for(int val:res)
+            cout<<val<<"  ";
+        cout<<endl;
+    }
 };
 
 int main()
@@ -252,7 +303,19 @@ int main()
     gts.addEdge(5, 0);
     gts.addEdge(5, 3);
 
+    cout<<"topo sort: ";
     gts.topoSort();
+
+    Graph gkts(6);
+    gkts.addEdge(3, 1, true); // <--- Notice the 'true' here!
+    gkts.addEdge(2, 3, true);
+    gkts.addEdge(4, 0, true);
+    gkts.addEdge(4, 1, true);
+    gkts.addEdge(5, 0, true);
+    gkts.addEdge(5, 3, true);
+
+    cout << "Topological Sort (Kahn's): ";
+    gkts.ktopoSort();
     return 0;
 }
 
