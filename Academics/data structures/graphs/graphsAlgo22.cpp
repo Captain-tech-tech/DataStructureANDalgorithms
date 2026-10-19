@@ -230,66 +230,183 @@
 
 
 
+// TC: O(ElogV), SC: O(V+E)
+// Prim's Algorithm for Minimum Spanning Tree (MST) 
+// #include <iostream>
+// #include <vector>
+// #include <queue>
 
+// using namespace std;
+
+// int primMST(int V, vector<vector<pair<int, int>>> adj) {
+//     vector<bool> inMST(V, false);
+    
+//     // min heap storing pairs of {weight, vertex}
+//     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+//     int mstCost = 0;
+
+//     pq.push({0, 0}); // {wt, vertex}
+
+//     while(pq.size() > 0) {
+//         auto p = pq.top();
+//         int wt = p.first;
+//         int u = p.second;
+//         pq.pop();
+
+//         if(!inMST[u]) {
+//             inMST[u] = true;
+//             mstCost += wt;
+
+//             for(int i = 0; i < adj[u].size(); i++) {
+//                 int v = adj[u][i].first;
+//                 int w = adj[u][i].second;
+
+//                 pq.push({w, v});
+//             }
+//         }
+//     }
+
+//     return mstCost;
+// }
+
+// int main() {
+//     int V = 4;
+//     vector<vector<pair<int, int>>> adj(V);
+
+//     // Undirected weighted graph
+//     adj[0].push_back({1, 10}); // v, wt
+//     adj[1].push_back({0, 10}); // u, wt
+
+//     adj[0].push_back({3, 30});
+//     adj[3].push_back({0, 30});
+
+//     adj[0].push_back({2, 15});
+//     adj[2].push_back({0, 15});
+
+//     adj[1].push_back({3, 40});
+//     adj[3].push_back({1, 40});
+
+//     adj[2].push_back({3, 50});
+//     adj[3].push_back({2, 50});
+
+//     cout << "Minimum cost of MST = " << primMST(V, adj) << endl;
+
+//     return 0;
+// }
+
+
+
+
+
+
+
+// disjoint set union (DSU)
 #include <iostream>
 #include <vector>
-#include <queue>
 
 using namespace std;
 
-int primMST(int V, vector<vector<pair<int, int>>> adj) {
-    vector<bool> inMST(V, false);
-    
-    // min heap storing pairs of {weight, vertex}
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    int mstCost = 0;
+class DisjointSet 
+{
+    int n;
+    vector<int> par;
+    vector<int> rank;
 
-    pq.push({0, 0}); // {wt, vertex}
-
-    while(pq.size() > 0) {
-        auto p = pq.top();
-        int wt = p.first;
-        int u = p.second;
-        pq.pop();
-
-        if(!inMST[u]) {
-            inMST[u] = true;
-            mstCost += wt;
-
-            for(int i = 0; i < adj[u].size(); i++) {
-                int v = adj[u][i].first;
-                int w = adj[u][i].second;
-
-                pq.push({w, v});
-            }
+public:
+    // initialization (for i = 0 to n)
+    DisjointSet(int n) {
+        this->n = n;
+        par.resize(n + 1);
+        rank.resize(n + 1, 0);
+        for (int i = 0; i <= n; i++) 
+        {
+            par[i] = i;
         }
     }
 
-    return mstCost;
-}
+    // find(x) function
+    int find(int x) 
+    {
+        if (par[x] == x) 
+        {
+            return x;
+        }
+        // recursive step 
+        // return find(par[x]);  // (1) way
+        
+        // path compression optimization : it helps in shallow tree and avoid skewed tree(skewed tree is not optimized)
+        //it can be change this to 'return par[x] = find(par[x]);' to enable path compression, which makes it much faster!
+        return par[x] = find(par[x]);  // (2) way
+    }
 
-int main() {
-    int V = 4;
-    vector<vector<pair<int, int>>> adj(V);
+    // union(a, b) function
+    void unionByRank(int a, int b) 
+    {
+        int parA = find(a);
+        int parB = find(b);
 
-    // Undirected weighted graph
-    adj[0].push_back({1, 10}); // v, wt
-    adj[1].push_back({0, 10}); // u, wt
+        // if parents are the same, they are already in the same set
+        if (parA == parB) 
+        {
+            return;
+        }
 
-    adj[0].push_back({3, 30});
-    adj[3].push_back({0, 30});
+        // Case 1: Ranks are equal
+        if (rank[parA] == rank[parB]) 
+        {
+            par[parB] = parA;
+            rank[parA]++;
+        }
+        // Case 2: Rank of A is greater
+        else if (rank[parA] > rank[parB]) 
+        {
+            par[parB] = parA;
+        }
+        // Case 3: Rank of B is greater
+        else 
+        {
+            par[parA] = parB;
+        }
+    }
 
-    adj[0].push_back({2, 15});
-    adj[2].push_back({0, 15});
+    // additional function for values printing (not part of data structure)
+    void getInfo()
+    {
+        for(int i=0;i<n;i++)
+        {
+            cout<<par[i]<<" ";
+        }
 
-    adj[1].push_back({3, 40});
-    adj[3].push_back({1, 40});
+        cout<<endl;
+        for(int i=0;i<n;i++)
+        {
+            cout<<rank[i]<<" ";
+        }
+        cout<<endl;
+    }
+};
 
-    adj[2].push_back({3, 50});
-    adj[3].push_back({2, 50});
+int main() 
+{
+    DisjointSet dsu(6);
 
-    cout << "Minimum cost of MST = " << primMST(V, adj) << endl;
+    dsu.unionByRank(0, 2);
+    cout << "Find(2): " << dsu.find(2) << endl; // Output: 0
+
+    dsu.unionByRank(1, 3);
+    dsu.unionByRank(2, 5);
+    dsu.unionByRank(0, 3);
+
+    cout << "Find(2) after merges: " << dsu.find(2) << endl; // Output: 0
+    
+    dsu.unionByRank(0, 4);
+
+    dsu.getInfo();
 
     return 0;
 }
+
+
+
+
 
