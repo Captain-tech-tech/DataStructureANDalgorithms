@@ -541,10 +541,118 @@
 // Tarjan's algorithm 
 
 // using tarjan's algorithm for finding the articulation points in a graph
+// #include <iostream>
+// #include <vector>
+// #include <set>
+// #include <algorithm>
+
+// using namespace std;
+
+// class Graph {
+// public:
+//     vector<vector<int>> adj;
+//     int V;
+//     int time;
+//     vector<int> dt;   // Discovery time
+//     vector<int> low;  // Lowest reachable discovery time
+
+//     Graph(int V) {
+//         this->V = V;
+//         adj.resize(V);
+//     }
+
+//     void addEdge(int u, int v) {
+//         adj[u].push_back(v);
+//         adj[v].push_back(u);
+//     }
+
+//     void dfs(int u, int parU, set<int>& criticalPoints) {
+//         dt[u] = low[u] = ++time;
+//         int children = 0;
+
+//         for (int i = 0; i < adj[u].size(); i++) {
+//             int v = adj[u][i];
+
+//             if (v == parU) continue;
+
+//             if (dt[v] != -1) {
+//                 // Back-edge found: update low-link value using neighbor's discovery time
+//                 low[u] = min(low[u], dt[v]);
+//             } else {
+//                 // Unvisited node found: explore it via DFS
+//                 children++;
+//                 dfs(v, u, criticalPoints);
+
+//                 // Update low-link value after subtree return
+//                 low[u] = min(low[u], low[v]);
+
+//                 // Condition 1 for Articulation Point: Non-root node
+//                 if (parU != -1 && low[v] >= dt[u]) {
+//                     criticalPoints.insert(u);
+//                 }
+//             }
+//         }
+
+//         // Condition 2 for Articulation Point: Root node with more than 1 independent child
+//         if (parU == -1 && children > 1) {
+//             criticalPoints.insert(u);
+//         }
+//     }
+
+//     int articulationPoints() {
+//         time = 0;
+//         dt.assign(V, -1);   // -1 indicates an unvisited node
+//         low.assign(V, -1);
+
+//         set<int> criticalPoints;
+
+//         // Loop handles disconnected graphs or multiple graph components
+//         for (int i = 0; i < V; i++) {
+//             if (dt[i] == -1) {
+//                 dfs(i, -1, criticalPoints);
+//             }
+//         }
+
+//         // Print the articulation points
+//         for (auto val : criticalPoints) {
+//             cout << val << " ";
+//         }
+//         cout << endl;
+
+//         return criticalPoints.size();
+//     }
+// };
+
+// int main() {
+//     // Example test case mimicking the driver setup in the screenshots
+//     Graph graph(6);
+    
+//     graph.addEdge(1, 0);
+//     graph.addEdge(1, 2);
+//     graph.addEdge(4, 3);
+//     // Adding optional edges to form an actual component like the instructor's terminal output 
+//     graph.addEdge(2, 0);
+//     graph.addEdge(0, 3);
+//     graph.addEdge(3, 5);
+
+//     cout << "Articulation points: ";
+//     int count = graph.articulationPoints();
+//     cout << "Total count: " << count << endl;
+
+//     return 0;
+// }
+
+
+
+
+
+
+
+
+// kosaraju's algorithm
 #include <iostream>
 #include <vector>
-#include <set>
-#include <algorithm>
+#include <stack>
 
 using namespace std;
 
@@ -552,9 +660,6 @@ class Graph {
 public:
     vector<vector<int>> adj;
     int V;
-    int time;
-    vector<int> dt;   // Discovery time
-    vector<int> low;  // Lowest reachable discovery time
 
     Graph(int V) {
         this->V = V;
@@ -563,86 +668,76 @@ public:
 
     void addEdge(int u, int v) {
         adj[u].push_back(v);
-        adj[v].push_back(u);
     }
 
-    void dfs(int u, int parU, set<int>& criticalPoints) {
-        dt[u] = low[u] = ++time;
-        int children = 0;
-
-        for (int i = 0; i < adj[u].size(); i++) {
-            int v = adj[u][i];
-
-            if (v == parU) continue;
-
-            if (dt[v] != -1) {
-                // Back-edge found: update low-link value using neighbor's discovery time
-                low[u] = min(low[u], dt[v]);
-            } else {
-                // Unvisited node found: explore it via DFS
-                children++;
-                dfs(v, u, criticalPoints);
-
-                // Update low-link value after subtree return
-                low[u] = min(low[u], low[v]);
-
-                // Condition 1 for Articulation Point: Non-root node
-                if (parU != -1 && low[v] >= dt[u]) {
-                    criticalPoints.insert(u);
-                }
+    // Helper function for Step 1: Standard DFS to fill the stack by finishing times
+    void topoSort(int curr, vector<bool> &vis, stack<int> &s) {
+        vis[curr] = true;
+        for(int neigh : adj[curr]) {
+            if(!vis[neigh]) {
+                topoSort(neigh, vis, s);
             }
         }
+        s.push(curr);
+    }
 
-        // Condition 2 for Articulation Point: Root node with more than 1 independent child
-        if (parU == -1 && children > 1) {
-            criticalPoints.insert(u);
+    // Helper function for Step 3: DFS traversal on the reversed (transpose) graph
+    void dfs(int curr, vector<bool> &vis, vector<vector<int>> &transpose) {
+        vis[curr] = true;
+        cout << curr << " ";
+        for(int neigh : transpose[curr]) {
+            if(!vis[neigh]) {
+                dfs(neigh, vis, transpose);
+            }
         }
     }
 
-    int articulationPoints() {
-        time = 0;
-        dt.assign(V, -1);   // -1 indicates an unvisited node
-        low.assign(V, -1);
-
-        set<int> criticalPoints;
-
-        // Loop handles disconnected graphs or multiple graph components
-        for (int i = 0; i < V; i++) {
-            if (dt[i] == -1) {
-                dfs(i, -1, criticalPoints);
+    // Core Kosaraju Algorithm
+    void kosaraju() {
+        // Step 1 - Find pseudo-topological order based on finish times
+        stack<int> s;
+        vector<bool> vis(V, false);
+        for(int i = 0; i < V; i++) {
+            if(!vis[i]) {
+                topoSort(i, vis, s);
             }
         }
 
-        // Print the articulation points
-        for (auto val : criticalPoints) {
-            cout << val << " ";
+        // Step 2 - Create the Transpose Graph (reverse all edge directions)
+        vector<vector<int>> transpose(V);
+        for(int u = 0; u < V; u++) {
+            vis[u] = false; // Reset visited array for the next step
+            for(int v : adj[u]) {
+                transpose[v].push_back(u); // Original: u -> v, Transpose: v -> u
+            }
         }
-        cout << endl;
 
-        return criticalPoints.size();
+        // Step 3 - Perform DFS on Transpose Graph using order from Stack
+        cout << "Printing the SCC: \n";
+        while(s.size() > 0) {
+            int curr = s.top();
+            s.pop();
+
+            if(!vis[curr]) {
+                dfs(curr, vis, transpose); // Prints one complete SCC
+                cout << endl;
+            }
+        }
     }
 };
 
 int main() {
-    // Example test case mimicking the driver setup in the screenshots
-    Graph graph(6);
-    
-    graph.addEdge(1, 0);
-    graph.addEdge(1, 2);
-    graph.addEdge(4, 3);
-    // Adding optional edges to form an actual component like the instructor's terminal output 
-    graph.addEdge(2, 0);
+    Graph graph(5);
+    graph.addEdge(0, 2);
     graph.addEdge(0, 3);
-    graph.addEdge(3, 5);
+    graph.addEdge(1, 0);
+    graph.addEdge(2, 1);
+    graph.addEdge(3, 4);
 
-    cout << "Articulation points: ";
-    int count = graph.articulationPoints();
-    cout << "Total count: " << count << endl;
+    graph.kosaraju();
 
     return 0;
 }
-
-
 
 
 
