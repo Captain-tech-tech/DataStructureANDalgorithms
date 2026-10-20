@@ -412,125 +412,289 @@
 
 
 // Kruskal's algorithm
+// #include <iostream>
+// #include <vector>
+// #include <algorithm> 
+
+// using namespace std;
+
+// class Edge 
+// {
+// public:
+//     int u, v, wt;
+
+//     Edge(int u, int v, int wt) 
+//     {
+//         this->u = u;
+//         this->v = v;
+//         this->wt = wt;
+//     }
+
+//     // Operator overload to sort edges by weight automatically
+//     bool operator<(const Edge &other) const 
+//     {
+//         return this->wt < other.wt;
+//     }
+// };
+
+// class Graph 
+// {
+// public:
+//     int V;
+//     vector<Edge> edges;
+//     vector<int> par, rank;
+
+//     Graph(int V) 
+//     {
+//         this->V = V;
+//         for (int i = 0; i < V; i++) 
+//         {
+//             par.push_back(i);
+//             rank.push_back(0);
+//         }
+//     }
+
+//     void addEdge(int u, int v, int wt) 
+//     {
+//         edges.push_back(Edge(u, v, wt));
+//     }
+
+//     // Find function with Path Compression
+//     int find(int x) 
+//     {
+//         if (par[x] == x) 
+//         {
+//             return x;
+//         }
+//         return par[x] = find(par[x]);
+//     }
+
+//     // Union function
+//     void unionByRank(int a, int b) 
+//     {
+//         int parA = find(a);
+//         int parB = find(b);
+
+//         if (parA == parB) return;
+
+//         if (rank[parA] > rank[parB]) 
+//         {
+//             par[parB] = parA;
+//         } else if (rank[parA] < rank[parB]) 
+//         {
+//             par[parA] = parB;
+//         } else 
+//         {
+//             par[parB] = parA;
+//             rank[parA]++;
+//         }
+//     }
+
+//     // Kruskal's Algorithm with Count Optimization
+//     void kruskal() // O(E log E)
+//     { 
+//         sort(edges.begin(), edges.end()); 
+//         int mstCost = 0;
+//         int count = 0; // Tracks the number of edges added to the MST
+
+//         // OPTIMIZATION: Loop breaks early once count reaches V-1
+//         for (int i = 0; i < edges.size() && count < V - 1; i++) 
+//         {
+//             Edge e = edges[i];
+
+//             int parU = find(e.u);
+//             int parV = find(e.v);
+
+//             if (parU != parV) 
+//             { // No cycle detected
+//                 unionByRank(e.u, e.v);
+//                 mstCost += e.wt;
+//                 count++;     // increment edge count
+//                 cout << "Included Edge: " << e.u << " - " << e.v << " (w: " << e.wt << ")" << endl;
+//             }
+//         }
+
+//         cout << "MST Cost: " << mstCost << endl;
+//     }
+// };
+
+// int main() {
+//     Graph graph(4);
+
+//     graph.addEdge(0, 1, 10);
+//     graph.addEdge(0, 2, 6);
+//     graph.addEdge(0, 3, 5);
+//     graph.addEdge(1, 3, 15);
+//     graph.addEdge(2, 3, 4);
+
+//     graph.kruskal();
+
+//     return 0;
+// }
+
+
+
+
+
+
+
+// Tarjan's algorithm 
+
+// using tarjan's algorithm for finding the articulation points in a graph
 #include <iostream>
 #include <vector>
-#include <algorithm> 
+#include <set>
+#include <algorithm>
 
 using namespace std;
 
-class Edge 
-{
+class Graph {
 public:
-    int u, v, wt;
-
-    Edge(int u, int v, int wt) 
-    {
-        this->u = u;
-        this->v = v;
-        this->wt = wt;
-    }
-
-    // Operator overload to sort edges by weight automatically
-    bool operator<(const Edge &other) const 
-    {
-        return this->wt < other.wt;
-    }
-};
-
-class Graph 
-{
-public:
+    vector<vector<int>> adj;
     int V;
-    vector<Edge> edges;
-    vector<int> par, rank;
+    int time;
+    vector<int> dt;   // Discovery time
+    vector<int> low;  // Lowest reachable discovery time
 
-    Graph(int V) 
-    {
+    Graph(int V) {
         this->V = V;
-        for (int i = 0; i < V; i++) 
-        {
-            par.push_back(i);
-            rank.push_back(0);
-        }
+        adj.resize(V);
     }
 
-    void addEdge(int u, int v, int wt) 
-    {
-        edges.push_back(Edge(u, v, wt));
+    void addEdge(int u, int v) {
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
 
-    // Find function with Path Compression
-    int find(int x) 
-    {
-        if (par[x] == x) 
-        {
-            return x;
-        }
-        return par[x] = find(par[x]);
-    }
+    void dfs(int u, int parU, set<int>& criticalPoints) {
+        dt[u] = low[u] = ++time;
+        int children = 0;
 
-    // Union function
-    void unionByRank(int a, int b) 
-    {
-        int parA = find(a);
-        int parB = find(b);
+        for (int i = 0; i < adj[u].size(); i++) {
+            int v = adj[u][i];
 
-        if (parA == parB) return;
+            if (v == parU) continue;
 
-        if (rank[parA] > rank[parB]) 
-        {
-            par[parB] = parA;
-        } else if (rank[parA] < rank[parB]) 
-        {
-            par[parA] = parB;
-        } else 
-        {
-            par[parB] = parA;
-            rank[parA]++;
-        }
-    }
+            if (dt[v] != -1) {
+                // Back-edge found: update low-link value using neighbor's discovery time
+                low[u] = min(low[u], dt[v]);
+            } else {
+                // Unvisited node found: explore it via DFS
+                children++;
+                dfs(v, u, criticalPoints);
 
-    // Kruskal's Algorithm with Count Optimization
-    void kruskal() // O(E log E)
-    { 
-        sort(edges.begin(), edges.end()); 
-        int mstCost = 0;
-        int count = 0; // Tracks the number of edges added to the MST
+                // Update low-link value after subtree return
+                low[u] = min(low[u], low[v]);
 
-        // OPTIMIZATION: Loop breaks early once count reaches V-1
-        for (int i = 0; i < edges.size() && count < V - 1; i++) 
-        {
-            Edge e = edges[i];
-
-            int parU = find(e.u);
-            int parV = find(e.v);
-
-            if (parU != parV) 
-            { // No cycle detected
-                unionByRank(e.u, e.v);
-                mstCost += e.wt;
-                count++;     // increment edge count
-                cout << "Included Edge: " << e.u << " - " << e.v << " (w: " << e.wt << ")" << endl;
+                // Condition 1 for Articulation Point: Non-root node
+                if (parU != -1 && low[v] >= dt[u]) {
+                    criticalPoints.insert(u);
+                }
             }
         }
 
-        cout << "MST Cost: " << mstCost << endl;
+        // Condition 2 for Articulation Point: Root node with more than 1 independent child
+        if (parU == -1 && children > 1) {
+            criticalPoints.insert(u);
+        }
+    }
+
+    int articulationPoints() {
+        time = 0;
+        dt.assign(V, -1);   // -1 indicates an unvisited node
+        low.assign(V, -1);
+
+        set<int> criticalPoints;
+
+        // Loop handles disconnected graphs or multiple graph components
+        for (int i = 0; i < V; i++) {
+            if (dt[i] == -1) {
+                dfs(i, -1, criticalPoints);
+            }
+        }
+
+        // Print the articulation points
+        for (auto val : criticalPoints) {
+            cout << val << " ";
+        }
+        cout << endl;
+
+        return criticalPoints.size();
     }
 };
 
 int main() {
-    Graph graph(4);
+    // Example test case mimicking the driver setup in the screenshots
+    Graph graph(6);
+    
+    graph.addEdge(1, 0);
+    graph.addEdge(1, 2);
+    graph.addEdge(4, 3);
+    // Adding optional edges to form an actual component like the instructor's terminal output 
+    graph.addEdge(2, 0);
+    graph.addEdge(0, 3);
+    graph.addEdge(3, 5);
 
-    graph.addEdge(0, 1, 10);
-    graph.addEdge(0, 2, 6);
-    graph.addEdge(0, 3, 5);
-    graph.addEdge(1, 3, 15);
-    graph.addEdge(2, 3, 4);
-
-    graph.kruskal();
+    cout << "Articulation points: ";
+    int count = graph.articulationPoints();
+    cout << "Total count: " << count << endl;
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
