@@ -650,15 +650,114 @@
 
 
 // kosaraju's algorithm
+// #include <iostream>
+// #include <vector>
+// #include <stack>
+
+// using namespace std;
+
+// class Graph {
+// public:
+//     vector<vector<int>> adj;
+//     int V;
+
+//     Graph(int V) {
+//         this->V = V;
+//         adj.resize(V);
+//     }
+
+//     void addEdge(int u, int v) {
+//         adj[u].push_back(v);
+//     }
+
+//     // Helper function for Step 1: Standard DFS to fill the stack by finishing times
+//     void topoSort(int curr, vector<bool> &vis, stack<int> &s) {
+//         vis[curr] = true;
+//         for(int neigh : adj[curr]) {
+//             if(!vis[neigh]) {
+//                 topoSort(neigh, vis, s);
+//             }
+//         }
+//         s.push(curr);
+//     }
+
+//     // Helper function for Step 3: DFS traversal on the reversed (transpose) graph
+//     void dfs(int curr, vector<bool> &vis, vector<vector<int>> &transpose) {
+//         vis[curr] = true;
+//         cout << curr << " ";
+//         for(int neigh : transpose[curr]) {
+//             if(!vis[neigh]) {
+//                 dfs(neigh, vis, transpose);
+//             }
+//         }
+//     }
+
+//     // Core Kosaraju Algorithm
+//     void kosaraju() {
+//         // Step 1 - Find pseudo-topological order based on finish times
+//         stack<int> s;
+//         vector<bool> vis(V, false);
+//         for(int i = 0; i < V; i++) {
+//             if(!vis[i]) {
+//                 topoSort(i, vis, s);
+//             }
+//         }
+
+//         // Step 2 - Create the Transpose Graph (reverse all edge directions)
+//         vector<vector<int>> transpose(V);
+//         for(int u = 0; u < V; u++) {
+//             vis[u] = false; // Reset visited array for the next step
+//             for(int v : adj[u]) {
+//                 transpose[v].push_back(u); // Original: u -> v, Transpose: v -> u
+//             }
+//         }
+
+//         // Step 3 - Perform DFS on Transpose Graph using order from Stack
+//         cout << "Printing the SCC: \n";
+//         while(s.size() > 0) {
+//             int curr = s.top();
+//             s.pop();
+
+//             if(!vis[curr]) {
+//                 dfs(curr, vis, transpose); // Prints one complete SCC
+//                 cout << endl;
+//             }
+//         }
+//     }
+// };
+
+// int main() {
+//     Graph graph(5);
+//     graph.addEdge(0, 2);
+//     graph.addEdge(0, 3);
+//     graph.addEdge(1, 0);
+//     graph.addEdge(2, 1);
+//     graph.addEdge(3, 4);
+
+//     graph.kosaraju();
+
+//     return 0;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+// Floyd warshall algorithm
 #include <iostream>
 #include <vector>
-#include <stack>
-
 using namespace std;
 
 class Graph {
 public:
-    vector<vector<int>> adj;
+    vector<vector<pair<int, int>>> adj;
     int V;
 
     Graph(int V) {
@@ -666,82 +765,70 @@ public:
         adj.resize(V);
     }
 
-    void addEdge(int u, int v) {
-        adj[u].push_back(v);
+    void addEdge(int u, int v, int wt) {
+        adj[u].push_back({v, wt});
     }
 
-    // Helper function for Step 1: Standard DFS to fill the stack by finishing times
-    void topoSort(int curr, vector<bool> &vis, stack<int> &s) {
-        vis[curr] = true;
-        for(int neigh : adj[curr]) {
-            if(!vis[neigh]) {
-                topoSort(neigh, vis, s);
-            }
-        }
-        s.push(curr);
-    }
+    void floydWarshall() {
+        const int INF = 1e9;
 
-    // Helper function for Step 3: DFS traversal on the reversed (transpose) graph
-    void dfs(int curr, vector<bool> &vis, vector<vector<int>> &transpose) {
-        vis[curr] = true;
-        cout << curr << " ";
-        for(int neigh : transpose[curr]) {
-            if(!vis[neigh]) {
-                dfs(neigh, vis, transpose);
-            }
-        }
-    }
+        vector<vector<int>> dist(V, vector<int>(V, INF));
 
-    // Core Kosaraju Algorithm
-    void kosaraju() {
-        // Step 1 - Find pseudo-topological order based on finish times
-        stack<int> s;
-        vector<bool> vis(V, false);
         for(int i = 0; i < V; i++) {
-            if(!vis[i]) {
-                topoSort(i, vis, s);
-            }
+            dist[i][i] = 0;
         }
 
-        // Step 2 - Create the Transpose Graph (reverse all edge directions)
-        vector<vector<int>> transpose(V);
         for(int u = 0; u < V; u++) {
-            vis[u] = false; // Reset visited array for the next step
-            for(int v : adj[u]) {
-                transpose[v].push_back(u); // Original: u -> v, Transpose: v -> u
+            for(auto edge : adj[u]) {
+                int v = edge.first;
+                int wt = edge.second;
+                dist[u][v] = wt;
             }
         }
 
-        // Step 3 - Perform DFS on Transpose Graph using order from Stack
-        cout << "Printing the SCC: \n";
-        while(s.size() > 0) {
-            int curr = s.top();
-            s.pop();
+        // core logic
+        for(int k = 0; k < V; k++) {
+            for(int i = 0; i < V; i++) {
+                for(int j = 0; j < V; j++) {
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+            }
+        }
 
-            if(!vis[curr]) {
-                dfs(curr, vis, transpose); // Prints one complete SCC
-                cout << endl;
+        // print
+        for(int i = 0; i < V; i++) {
+            for(int j = 0; j < V; j++) {
+                if(dist[i][j] == INF) {
+                    cout << "INF ";
+                } else {
+                    cout << dist[i][j] << " ";
+                }
+            }
+            cout << endl;
+        }
+
+        // check for neg weighted cycles
+        for(int i = 0; i < V; i++) {
+            if(dist[i][i] < 0) {
+                cout << "Negative weighted cycle exists \n";
             }
         }
     }
 };
 
 int main() {
-    Graph graph(5);
-    graph.addEdge(0, 2);
-    graph.addEdge(0, 3);
-    graph.addEdge(1, 0);
-    graph.addEdge(2, 1);
-    graph.addEdge(3, 4);
+    Graph graph(4);
 
-    graph.kosaraju();
+    graph.addEdge(0, 1, 4);
+    graph.addEdge(0, 2, 11);
+    graph.addEdge(1, 2, 2);
+    graph.addEdge(3, 1, -8);
+    graph.addEdge(2, 3, 3);
+
+    graph.floydWarshall();
 
     return 0;
 }
-
-
-
-
 
 
 
