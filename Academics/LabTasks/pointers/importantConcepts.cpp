@@ -55,3 +55,52 @@
 
 
 
+
+
+
+// Hot potato game
+// #include<iostream>
+// #include<queue>
+// using namespace std;
+
+// int main()
+
+// {
+//     queue<string>st;
+//     while(true)
+//     {
+//         string s;
+//         char choice;
+//         cout<<"do you wanna enter a name (y/n): ";cin>>choice;
+//         if(choice=='y')
+//         {
+//             cin>>s;
+//             st.push(s);
+//         }
+//         else
+//             break;
+//     }
+
+//     int k;cout<<"enter k value : ";cin>>k;
+
+//     while(st.size()>1)
+//     {
+//         for(int i=0;i<k-1;i++)
+//         {
+//             string t = st.front();
+//             st.pop();
+//             st.push(t);
+//         }
+//         string t = st.front();
+//         st.pop();
+//         cout<<"Eliminated : "<<t<<endl;
+//     }
+
+//     cout<<"Winner: "<<st.front()<<endl;
+
+//     return 0;
+// }
+
+
+
+
