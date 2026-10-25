@@ -104,3 +104,124 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// struct Stack {
+//     string data[1000];
+//     int top = -1;
+
+//     void push(string val) {
+//         if (top < 999) {
+//             top++;
+//             data[top] = val;
+//         }
+//     }
+
+//     string pop() {
+//         if (top >= 0) {
+//             string val = data[top];
+//             top--;
+//             return val;
+//         }
+//         return "";
+//     }
+
+//     bool isEmpty() {
+//         return top == -1;
+//     }
+
+//     void clear() {
+//         top = -1;
+//     }
+// };
+
+// int main() {
+//     Stack undoStack;
+//     Stack redoStack;
+//     char choice;
+
+//     while (true) {
+//         cout << "Car Control Menu" << endl;
+//         cout << "1. Accelerate" << endl;
+//         cout << "2. Brake" << endl;
+//         cout << "3. Decelerate" << endl;
+//         cout << "4. Turn Left" << endl;
+//         cout << "5. Turn Right" << endl;
+//         cout << "Z. Undo" << endl;
+//         cout << "Y. Redo" << endl;
+//         cout << "Q. Quit" << endl;
+//         cout << "Choice: ";
+//         cin >> choice;
+
+//         if (choice == '1') {
+//             cout << "Action: Accelerate" << endl;
+//             undoStack.push("Accelerate");
+//             redoStack.clear();
+//         } else if (choice == '2') {
+//             cout << "Action: Brake" << endl;
+//             undoStack.push("Brake");
+//             redoStack.clear();
+//         } else if (choice == '3') {
+//             cout << "Action: Decelerate" << endl;
+//             undoStack.push("Decelerate");
+//             redoStack.clear();
+//         } else if (choice == '4') {
+//             cout << "Action: Turn Left" << endl;
+//             undoStack.push("Turn Left");
+//             redoStack.clear();
+//         } else if (choice == '5') {
+//             cout << "Action: Turn Right" << endl;
+//             undoStack.push("Turn Right");
+//             redoStack.clear();
+//         } else if (choice == 'Z' || choice == 'z') {
+//             if (!undoStack.isEmpty()) {
+//                 string current = undoStack.pop();
+//                 cout << "Undo: " << current << endl;
+//                 redoStack.push(current);
+//             } else {
+//                 cout << "Nothing to undo" << endl;
+//             }
+//         } else if (choice == 'Y' || choice == 'y') {
+//             if (!redoStack.isEmpty()) {
+//                 string current = redoStack.pop();
+//                 cout << "Redo: " << current << endl;
+//                 undoStack.push(current);
+//             } else {
+//                 cout << "Nothing to redo" << endl;
+//             }
+//         } else if (choice == 'Q' || choice == 'q') {
+//             break;
+//         } else {
+//             cout << "Invalid choice" << endl;
+//         }
+//         cout << endl;
+//     }
+
+//     return 0;
+// }
+
+
+
+
+
+
+
+
