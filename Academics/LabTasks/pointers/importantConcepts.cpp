@@ -269,3 +269,74 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// plus one 
+// #include<iostream>
+// using namespace std;
+
+// int main()
+// {
+//     int n;
+//     cin>>n;
+//     int arr[n];
+//     for(int i=0;i<n;i++)
+//         cin>>arr[i];
+
+//     bool carry = true;
+
+//     for(int i=n-1;i>=0;i--)
+//     {
+//         if(arr[i]<9)
+//         {
+//             arr[i]++;
+//             carry = false;
+//             break;
+//         }
+//         else
+//         {
+//             arr[i] = 0;
+//         }
+//     }
+
+//     if(carry)
+//     {
+//         n++;
+//         int *new_arr = new int[n];
+//         new_arr[0] = 1;
+//         for(int i=1;i<n;i++)
+//             new_arr[i] = 0;
+        
+//         for(int i=0;i<n;i++)
+//             cout<<new_arr[i]<<"  ";
+//         cout<<endl;
+//     }
+//     else
+//     {
+//         cout<<endl<<"Printing new array"<<endl;
+//         for(int i=0;i<n;i++)
+//             cout<<arr[i]<<"  ";
+//         cout<<endl;
+//     }
+
+//     return 0;
+// }
+
+
+
+
+
+
+
+
