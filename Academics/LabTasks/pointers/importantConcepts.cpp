@@ -225,3 +225,47 @@
 
 
 
+
+
+
+// insert position
+// #include<iostream>
+// using namespace std;
+
+// int main()
+// {
+//     int n;
+//     cin>>n;
+    
+//     int arr[n];
+//     for(int i=0;i<n;i++)
+//         cin>>arr[i];
+    
+//     int target;
+//     cin>>target;
+
+//     int st = 0, end = n-1, ans = -1;
+
+//     while(st<=end)
+//     {
+//         int mid = st + (end-st)/2;
+
+//         if(arr[mid] == target)
+//         {
+//             ans = mid;
+//             break;
+//         }
+//         else if(arr[mid] > target)
+//             end = mid-1;
+//         else
+//             st = mid+1;
+//     }
+
+//     if(ans == -1)
+//         ans = st;
+//     cout<<ans<<endl;
+//     return 0;
+// }
+
+
+
