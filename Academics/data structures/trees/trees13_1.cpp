@@ -36,6 +36,32 @@
 
 
 
+// Postfix expression to expression tree
+// Now we have a postfix expression.
+// We can construct an expression tree from it using another stack.
+// 
+// The idea is simple:
+// Every operand becomes a new one-node tree.
+// Every operator combines two existing trees.
+// The operator becomes the root of the new tree.
+
+// Algorithm : read the postfix expression from left to right.
+
+// Case 1: Symbol is an operand
+// 1) Create a new tree node containing the operand.
+// 2) Push that node onto the stack.
+
+// Case 2: Symbol is an operator
+// 1) Pop the top tree from the stack. This becomes the right subtree.
+// 2) Pop the next tree from the stack. This becomes the left subtree.
+// 3) Create a new node containing the operator.
+// 4) Attach the left and right subtrees to the operator node.
+// 5) Push the newly created tree onto the stack.
+
+// At the end, the remaining tree on the stack is the complete expression tree.
+
+
+
 
 
 
