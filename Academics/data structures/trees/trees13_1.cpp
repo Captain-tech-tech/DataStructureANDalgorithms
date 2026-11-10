@@ -62,6 +62,69 @@
 
 
 
+// How does expression tree execution work?
+// After constructing the expression tree, we can execute it using postorder traversal.
+// Postorder traversal follows this sequence: Visit the left subtree, visit the right subtree, process the root operator.
+// why postorder because we must calculate the operands before performing the operation.
+
+// e.g:  (5+3)∗2
+//        *
+//       / \
+//      +   2
+//     / \
+//    5   3
+
+// Postorder execution:
+// Visit 5.
+// Visit 3.
+// Calculate 5 + 3 = 8.
+// Visit 2.
+// Calculate 8 * 2 = 16.
+// final result is 16
+
+
+// Algorithm                    Technique                                     Data structure
+// Infix → Postfix              Operator precedence and associativity         Stack
+// Postfix → Expression tree    Pop two trees and combine                     Stack of trees
+// Expression tree → Result     Recursive postorder evaluation                Binary tree and recursion
+
+
+
+
+
+// Q1. Why do we use a stack for infix-to-postfix conversion?
+// Because operators must be temporarily stored and processed according to their precedence and associativity.
+
+// Q2. Why do we use a stack for postfix-to-expression-tree conversion?
+// Because operands and previously constructed subtrees must be stored until an operator combines them.
+
+// Q3. Why do we pop the right child first?
+// Because the first popped element represents the right operand, while the second popped element represents the left operand.
+
+// Q4. Why are operators internal nodes?
+// Because operators perform operations on operands, so they need child nodes representing those operands.
+
+// Q5. Why are operands leaf nodes?
+// Because operands provide values and do not need further children in an ordinary binary arithmetic expression tree.
+
+// Q6. Which traversal is used to evaluate an expression tree?
+// Postorder traversal (Left, Right, Root).
+
+// Q7. How does an expression tree help compiler optimization?
+// It makes the structure of expressions explicit, allowing the compiler to identify constant expressions, simplify operations, and detect repeated computations
+
+
+
+
+
+
+
+
+
+
+// The provided code supports binary operators and does not directly support unary minus (such as -5 or -a). 
+// You can represent a negative value using 0-5 or 0-a.
+
 
 
 
