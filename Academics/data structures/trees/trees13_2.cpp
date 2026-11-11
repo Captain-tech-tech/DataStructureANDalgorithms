@@ -93,6 +93,14 @@
 
 
 
+// C++ implementation
+// unordered_map to store character frequencies and codes.
+// priority_queue to select the two smallest frequency nodes.
+// A binary tree to represent Huffman codes.
+// Recursion to generate codes.
+// Tree traversal to decode the encoded bitstream.
+// The priority_queue will work as a min-heap, so the node with the smallest frequency is always available at the top.
+
 
 
 
