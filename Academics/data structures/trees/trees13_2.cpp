@@ -3,6 +3,10 @@
 // Huffman Encoding is a "lossless data compression algorithm" that reduces the number of bits required to represent data.
 // Lossless means that when we compress the data and then decompress it, we get exactly the original message back.
 
+// Huffman Encoding uses a min-priority queue to construct a binary tree based on character frequencies. The tree generates
+// variable-length, prefix-free binary codes. Frequent characters get shorter codes, less frequent characters get longer codes, 
+// and the same tree is used to decode the compressed bitstream.
+
 // Instead of giving every character the same number of bits, Huffman Encoding assigns shorter codes to frequent characters and 
 // longer codes to less frequent characters. This reduces the total number of bits required to store the message.
 // Important: Huffman Encoding is a greedy algorithm because, at each step, it selects the two nodes with the smallest
@@ -67,24 +71,30 @@
 
 
 
-// Original Message
-// AAABBBBBCCCCCCDDDDEE
+// Huffman Encoding  Complete Process
+// Read the original message
+// Example: AAABBBBBCCCCCCDDDDEE
 //         |
-// Calculate Character Frequencies
+// Calculate character frequencies
 // A=3, B=5, C=6, D=4, E=2
 //         |
-// Construct Huffman Tree
-// Using a min-priority queue
+// Insert all characters into a min-priority queue
+// Nodes are ordered by their frequencies.
 //         |
-// Generate Binary Codes
-// D=00, E=010, A=011, B=10, C=11
+// Construct the Huffman tree
+// Repeatedly remove the two smallest nodes, combine their frequencies, and insert the parent node.
 //         |
-// Encode the Message
-// Convert every character into its Huffman code.
+// Generate binary codes
+// Left edge = 0; right edge = 1.
 //         |
-// Decoding
-// Recover the Original Message
-
+// Encode the original message
+// Replace each character with its corresponding Huffman code.
+//         |
+// Decode the compressed message
+// Traverse the same tree using the encoded bits to recover the original characters.
+//         |
+// Final result
+// The original message is recovered without losing any information.
 
 
 
@@ -556,7 +566,41 @@ int main() {
 
 
 
+// Q1. What is Huffman Encoding?
+// Huffman Encoding is a lossless compression algorithm that assigns variable-length binary codes to characters according to their frequencies.
 
+// Q2. Why are frequent characters assigned shorter codes?
+// Because frequent characters occur more often, so reducing their code length saves more bits.
+
+// Q3. Why do we use a binary tree?
+// Because each character can be represented by a path consisting of left and right edges, corresponding to 0 and 1.
+
+// Q4. What is the role of internal nodes?
+// Internal nodes store the sum of the frequencies of their left and right children.
+
+// Q5. What is the role of leaf nodes?
+// Leaf nodes represent the original characters and their frequencies.
+
+// Q6. Why do we use a min-priority queue?
+// To efficiently select the two nodes having the smallest frequencies at each step.
+
+// Q7. Why is Huffman Encoding a greedy algorithm?
+// Because it repeatedly selects the two smallest-frequency nodes and combines them.
+
+// Q8. What is a prefix-free code?
+// A code in which no complete character code is the prefix of another character's code. This makes decoding unambiguous.
+
+// Q9. Is Huffman Encoding lossless or lossy?
+// It is lossless because decoding recovers the exact original message.
+
+// Q10. How is decoding performed?
+// By traversing the Huffman tree from the root, following 0 to the left and 1 to the right, and outputting a character whenever a leaf is reached.
+
+// Q11. What happens if all characters have the same frequency?
+// Huffman still constructs a valid tree. The codes will generally have similar lengths, and there may be little or no compression advantage over fixed-length coding.
+
+// Q12. What happens if the message contains only one unique character?
+// The implementation assigns that character the code 0, because a single leaf otherwise has an empty path.
 
 
 
