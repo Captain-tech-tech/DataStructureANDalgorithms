@@ -411,7 +411,7 @@ public:
     }
 
     
-    Node* parent(Node* curr, Node* p, Node* par)
+    Node* parent(Node* curr, Node* p, Node* par)  // node *n = parent(root, p, NULL); p is the node whose parent we want to find
     {
         if(curr == NULL)
             return NULL;
@@ -435,7 +435,7 @@ public:
         }
     }
 
-    Node* sibling(Node* root, Node* p)
+    Node* sibling(Node* root, Node* p) // here p is the node whose sibling we want to find
     {
         Node* par = parent(root, p, NULL);
 
@@ -445,7 +445,7 @@ public:
             return par->lchild;
     }
 
-    int getLevel(Node *ptr,int val,int level) 
+    int getLevel(Node *ptr,int val,int level) // cout<<"Level of 9: "<<getLevel(root, 9, 0)<<endl;
     {
     if (ptr == NULL)
         return -1;
