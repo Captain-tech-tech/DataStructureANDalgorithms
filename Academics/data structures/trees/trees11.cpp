@@ -410,6 +410,56 @@ public:
         }
     }
 
+    
+    Node* parent(Node* curr, Node* p, Node* par)
+    {
+        if(curr == NULL)
+            return NULL;
+
+        if (curr == p)
+        {
+            return par;
+        }
+        else
+        {
+            Node *t = NULL;
+            t = parent(curr->lchild, p, curr);
+            if(t!= NULL)
+                return t;
+            else
+            {
+                t = parent(curr->rchild, p, curr);
+                return t;
+            }
+
+        }
+    }
+
+    Node* sibling(Node* root, Node* p)
+    {
+        Node* par = parent(root, p, NULL);
+
+        if (par->lchild == p)
+            return par->rchild;
+        else 
+            return par->lchild;
+    }
+
+    int getLevel(Node *ptr,int val,int level) 
+    {
+    if (ptr == NULL)
+        return -1;
+    if (ptr->data == val)
+        return level;
+        int left = getLevel(ptr->lchild, val, level+1);
+        int right = getLevel(ptr->rchild, val, level+1);
+
+        if (left > right)
+            return left;
+        else 
+            return right;
+    }
+
 
     // Destructor helper
     // Deletes every node using postorder traversal.
