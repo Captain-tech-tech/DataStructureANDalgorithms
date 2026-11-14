@@ -414,7 +414,13 @@ public:
     // Destructor helper
     // Deletes every node using postorder traversal.
 
-    void DeleteTree(Node *p)
+    // This function deletes all the nodes in the tree, but it does not set your external root pointer to 
+    // nullptr. deleteTree(root); and then try to use root afterward, you will have a dangerous dangling 
+    // pointer. It is good practice to reset the root pointer in the calling code
+    // deleteTree(root);
+    // root = nullptr;
+
+    void DeleteTree(Node *p)  
     {
         if (p == nullptr)
         {
@@ -426,6 +432,18 @@ public:
 
         delete p;
     }
+
+    // void deleteTree(Node* &ptr)     
+    // {
+    //     if (ptr == nullptr) return;
+    
+    //     deleteTree(ptr->lchild);
+    //     deleteTree(ptr->rchild);
+    
+    //     delete ptr;
+    //     ptr = nullptr;
+    // }
+
 
 
     // Destructor
